@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YESHCOM OS — Formulaires</title>
+<template id="__bundler_thumbnail" data-bg-color="#0A0A0A">
+  <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="280" fill="#0A0A0A"/>
+    <rect x="20" y="20" width="220" height="240" rx="10" fill="#0F0F0F" stroke="#262626"/>
+    <rect x="36" y="40" width="80" height="10" rx="3" fill="#E8690A"/>
+    <rect x="36" y="62" width="180" height="34" rx="6" fill="#161616"/>
+    <rect x="36" y="106" width="180" height="34" rx="6" fill="#161616"/>
+    <rect x="36" y="150" width="120" height="34" rx="6" fill="#161616"/>
+    <rect x="36" y="220" width="80" height="26" rx="5" fill="#E8690A"/>
+    <rect x="260" y="40" width="120" height="200" rx="8" fill="#0F0F0F" stroke="#262626"/>
+    <rect x="276" y="56" width="60" height="6" rx="2" fill="#888"/>
+    <rect x="276" y="72" width="88" height="22" rx="4" fill="#161616"/>
+    <rect x="276" y="104" width="88" height="22" rx="4" fill="#161616"/>
+    <rect x="276" y="136" width="88" height="22" rx="4" fill="#E8690A" opacity="0.3"/>
+    <rect x="276" y="180" width="60" height="20" rx="4" fill="#E8690A"/>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; }
+body { font-family: 'DM Sans', sans-serif; background: #0A0A0A; color: #F5F5F5; overflow:hidden; }
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2A2A2A; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #3A3A3A; }
+button { font-family: 'DM Sans', sans-serif; cursor: pointer; }
+input, textarea, select { font-family: 'DM Sans', sans-serif; }
+input::placeholder, textarea::placeholder { color: #5A5A5A; }
+@keyframes fdSlideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes fdFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fdSpin { to { transform: rotate(360deg); } }
+@keyframes fdPulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.form-drawer * { scrollbar-width: thin; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="forms-system.jsx"></script>
+<script type="text/babel" src="forms-finance.jsx"></script>
+<script type="text/babel" src="forms-people.jsx"></script>
+<script type="text/babel" src="forms-projects.jsx"></script>
+<script type="text/babel">
+const { useState } = React;
+
+const FORMS = [
+  { group:'Finance', items:[
+    { id:'devis', label:'Devis', icon:'invoice', cmp:'DevisForm', desc:'Multi-étapes · lignes répétables · aperçu PDF live' },
+    { id:'facture', label:'Facture', icon:'invoice', cmp:'FactureForm', desc:'Conversion devis · TVA · rappels auto' },
+    { id:'journal', label:'Écriture journal', icon:'finance', cmp:'JournalForm', desc:'Dépense / recette · catégorie · justificatif' },
+  ]},
+  { group:'CRM', items:[
+    { id:'client', label:'Client', icon:'clients', cmp:'ClientForm', desc:'Entreprise / particulier · contacts multiples · pipeline' },
+    { id:'prospect', label:'Prospect', icon:'prospect', cmp:'ProspectForm', desc:'Capture rapide · qualification · suivi' },
+  ]},
+  { group:'Équipe', items:[
+    { id:'membre', label:'Membre équipe', icon:'team', cmp:'MembreForm', desc:'Rôles · accès modules · invitation' },
+    { id:'prestataire', label:'Prestataire', icon:'services', cmp:'PrestataireForm', desc:'Compétences · tarifs · documents légaux' },
+    { id:'recrut', label:'Recrutement', icon:'user', cmp:'RecrutementForm', desc:'Offre + candidature · diffusion multi-canaux' },
+  ]},
+  { group:'Projets', items:[
+    { id:'projet', label:'Projet', icon:'projects', cmp:'ProjetForm', desc:'Brief · équipe · jalons · budget' },
+    { id:'tache', label:'Tâche / livrable', icon:'kanban', cmp:'TacheForm', desc:'Kanban · priorité · estimation · tags' },
+  ]},
+  { group:'Catalogue', items:[
+    { id:'service', label:'Service', icon:'services', cmp:'ServiceForm', desc:'Catalogue · tarification · inclusions' },
+    { id:'stock', label:'Article stock', icon:'stock', cmp:'StockForm', desc:'Photos · specs · location' },
+    { id:'location', label:'Location matériel', icon:'stock', cmp:'LocationForm', desc:'Loueur · période · caution' },
+  ]},
+  { group:'Autres', items:[
+    { id:'drive', label:'Upload Drive', icon:'drive', cmp:'DriveForm', desc:'Fichiers / dossier · permissions · liens projet' },
+    { id:'template', label:'Template', icon:'templates', cmp:'TemplateForm', desc:'Variables dynamiques · partage équipe' },
+    { id:'note', label:'Note journal de bord', icon:'journal', cmp:'NoteForm', desc:'Type · humeur · tags · contexte' },
+    { id:'settings', label:'Paramètres', icon:'settings', cmp:'SettingsForm', desc:'Société · compte · facturation · sécurité' },
+  ]},
+];
+
+const App = () => {
+  const [active, setActive] = useState(null);
+  const FormCmp = active ? window[active] : null;
+
+  return (
+    <div style={{ height:'100vh', display:'flex', flexDirection:'column', background:'#0A0A0A' }}>
+      {/* HEADER */}
+      <header style={{ flexShrink:0, padding:'24px 40px', borderBottom:`1px solid ${FC.border}`, display:'flex', alignItems:'center', gap:18 }}>
+        <div style={{ width:42, height:42, borderRadius:9, background:FC.primary, display:'flex', alignItems:'center', justifyContent:'center' }}>
+          <span style={{ fontFamily:'Montserrat', fontSize:22, fontWeight:900, color:'#fff' }}>Y</span>
+        </div>
+        <div style={{ flex:1 }}>
+          <div style={{ fontFamily:'Montserrat', fontSize:20, fontWeight:800, color:FC.t1, letterSpacing:'1.5px' }}>YESHCOM OS — FORMULAIRES</div>
+          <div style={{ fontSize:11, color:FC.primary, fontFamily:'JetBrains Mono', letterSpacing:'2px', marginTop:2 }}>SYSTÈME DE FORMS · v1.0 · 16 modèles</div>
+        </div>
+        <div style={{ display:'flex', alignItems:'center', gap:8, padding:'8px 14px', background:FC.field, border:`1px solid ${FC.border}`, borderRadius:7, fontSize:11, color:FC.t2, fontFamily:'JetBrains Mono', letterSpacing:'0.05em' }}>
+          <span style={{ width:7, height:7, borderRadius:'50%', background:FC.success, animation:'fdPulse 1.5s infinite' }}/>
+          PREVIEW STANDALONE
+        </div>
+      </header>
+
+      {/* INTRO */}
+      <div style={{ flexShrink:0, padding:'28px 40px 14px', display:'flex', alignItems:'flex-start', gap:24, borderBottom:`1px solid ${FC.border}` }}>
+        <div style={{ flex:1, maxWidth:680 }}>
+          <h1 style={{ fontFamily:'Montserrat', fontSize:32, fontWeight:800, color:FC.t1, letterSpacing:'-0.01em', lineHeight:1.15, marginBottom:10 }}>
+            Tous les formulaires de l'OS, <span style={{ color:FC.primary }}>en drawer latéral.</span>
+          </h1>
+          <p style={{ fontSize:13, color:FC.t2, lineHeight:1.55, maxWidth:600 }}>
+            Un système commun, 16 modèles. Chacun gère ses spécificités : multi-étapes, lignes répétables, calculs auto, autocomplétion, drag&drop, aperçu live, validation inline, auto-save, champs conditionnels.
+          </p>
+        </div>
+        <div style={{ display:'flex', gap:10, flexWrap:'wrap' }}>
+          {[
+            { l:'Multi-étapes', i:'arrow_r' },
+            { l:'Auto-save', i:'save' },
+            { l:'Lignes répétables', i:'plus' },
+            { l:'Drag & drop', i:'upload' },
+            { l:'Aperçu live', i:'eye' },
+            { l:'Calculs auto', i:'percent' },
+          ].map(c => (
+            <div key={c.l} style={{ display:'flex', alignItems:'center', gap:7, background:FC.field, border:`1px solid ${FC.border}`, borderRadius:6, padding:'6px 11px', fontSize:11, color:FC.t2, fontFamily:'JetBrains Mono', letterSpacing:'0.04em' }}>
+              <FI n={c.i} s={12} c={FC.primary}/>{c.l}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* GRID */}
+      <main style={{ flex:1, overflowY:'auto', padding:'24px 40px 60px' }}>
+        {FORMS.map(grp => (
+          <section key={grp.group} style={{ marginBottom:32 }}>
+            <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:14, paddingBottom:8, borderBottom:`1px solid ${FC.border}` }}>
+              <span style={{ fontSize:10, color:FC.primary, fontFamily:'JetBrains Mono', letterSpacing:'0.2em', textTransform:'uppercase', fontWeight:700 }}>{grp.group}</span>
+              <span style={{ fontSize:10, color:FC.t3, fontFamily:'JetBrains Mono' }}>· {grp.items.length} formulaire{grp.items.length>1?'s':''}</span>
+            </div>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))', gap:12 }}>
+              {grp.items.map(it => (
+                <button key={it.id} onClick={() => setActive(it.cmp)}
+                  style={{ display:'flex', alignItems:'flex-start', gap:14, background:FC.panel, border:`1px solid ${FC.border}`, borderRadius:10, padding:'18px 18px', cursor:'pointer', textAlign:'left', transition:'all 0.15s', fontFamily:'DM Sans' }}
+                  onMouseEnter={e=>{ e.currentTarget.style.borderColor = FC.primary; e.currentTarget.style.transform='translateY(-2px)'; e.currentTarget.style.background=FC.field; }}
+                  onMouseLeave={e=>{ e.currentTarget.style.borderColor = FC.border; e.currentTarget.style.transform='translateY(0)'; e.currentTarget.style.background=FC.panel; }}>
+                  <div style={{ width:38, height:38, borderRadius:8, background:FC.primaryDim, border:`1px solid ${FC.primary}30`, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+                    <FI n={it.icon} s={17} c={FC.primary}/>
+                  </div>
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ fontSize:14, fontWeight:600, color:FC.t1, marginBottom:4 }}>{it.label}</div>
+                    <div style={{ fontSize:11, color:FC.t3, lineHeight:1.45 }}>{it.desc}</div>
+                  </div>
+                  <FI n="arrow_r" s={14} c={FC.t3}/>
+                </button>
+              ))}
+            </div>
+          </section>
+        ))}
+      </main>
+
+      {/* RENDER ACTIVE FORM */}
+      {FormCmp && <FormCmp open={true} onClose={() => setActive(null)}/>}
+    </div>
+  );
+};
+
+setTimeout(() => {
+  const root = ReactDOM.createRoot(document.getElementById('root'));
+  root.render(<App/>);
+}, 50);
+</script>
+</body>
+</html>

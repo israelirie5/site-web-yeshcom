@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YESHCOM OS — v2.0</title>
+<template id="__bundler_thumbnail" data-bg-color="#0A0A0A">
+  <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+    <rect width="400" height="280" fill="#0A0A0A"/>
+    <rect width="60" height="280" fill="#111111"/>
+    <rect x="10" y="14" width="40" height="40" rx="8" fill="#E8690A"/>
+    <text x="30" y="41" text-anchor="middle" font-size="22" font-weight="900" fill="white" font-family="Arial">Y</text>
+    <rect x="10" y="68" width="40" height="7" rx="3" fill="#E8690A" opacity="0.9"/>
+    <rect x="10" y="82" width="40" height="7" rx="3" fill="#2A2A2A"/>
+    <rect x="10" y="96" width="40" height="7" rx="3" fill="#2A2A2A"/>
+    <rect x="10" y="110" width="40" height="7" rx="3" fill="#2A2A2A"/>
+    <rect x="10" y="124" width="40" height="7" rx="3" fill="#2A2A2A"/>
+    <rect x="60" width="340" height="48" fill="#111111"/>
+    <rect x="76" y="16" width="90" height="14" rx="4" fill="#1A1A1A"/>
+    <rect x="310" y="16" width="70" height="14" rx="5" fill="#1A1A1A"/>
+    <circle cx="376" cy="23" r="7" fill="#E8690A" opacity="0.6"/>
+    <rect x="76" y="62" width="74" height="52" rx="7" fill="#111111" stroke="#2A2A2A" stroke-width="1"/>
+    <rect x="158" y="62" width="74" height="52" rx="7" fill="#111111" stroke="#2A2A2A" stroke-width="1"/>
+    <rect x="240" y="62" width="74" height="52" rx="7" fill="#111111" stroke="#2A2A2A" stroke-width="1"/>
+    <rect x="322" y="62" width="68" height="52" rx="7" fill="#111111" stroke="#2A2A2A" stroke-width="1"/>
+    <rect x="76" y="62" width="3" height="52" rx="2" fill="#E8690A"/>
+    <rect x="76" y="126" width="185" height="112" rx="7" fill="#111111" stroke="#2A2A2A" stroke-width="1"/>
+    <rect x="269" y="126" width="121" height="112" rx="7" fill="#111111" stroke="#2A2A2A" stroke-width="1"/>
+    <rect x="92" y="196" width="14" height="30" rx="2" fill="#E8690A" opacity="0.3"/>
+    <rect x="112" y="182" width="14" height="44" rx="2" fill="#E8690A" opacity="0.5"/>
+    <rect x="132" y="170" width="14" height="56" rx="2" fill="#E8690A" opacity="0.7"/>
+    <rect x="152" y="158" width="14" height="68" rx="2" fill="#E8690A" opacity="0.9"/>
+    <rect x="172" y="166" width="14" height="60" rx="2" fill="#E8690A" opacity="0.8"/>
+    <rect x="192" y="152" width="14" height="74" rx="2" fill="#E8690A"/>
+    <rect x="283" y="142" width="88" height="7" rx="2" fill="#2A2A2A"/>
+    <rect x="283" y="156" width="66" height="7" rx="2" fill="#2A2A2A"/>
+    <rect x="283" y="170" width="76" height="7" rx="2" fill="#2A2A2A"/>
+    <rect x="283" y="184" width="55" height="7" rx="2" fill="#2A2A2A"/>
+    <rect x="283" y="198" width="70" height="7" rx="2" fill="#E8690A" opacity="0.4"/>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; overflow: hidden; }
+body { font-family: 'DM Sans', sans-serif; background: #0A0A0A; color: #F5F5F5; }
+:root {
+  --primary: #E8690A;
+  --primary-dim: rgba(232,105,10,0.12);
+  --primary-mid: rgba(232,105,10,0.25);
+  --bg: #0A0A0A;
+  --s1: #111111;
+  --s2: #1A1A1A;
+  --border: #2A2A2A;
+  --text1: #F5F5F5;
+  --text2: #888888;
+  --text3: #555555;
+  --success: #22C55E;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --info: #3B82F6;
+  --purple: #8B5CF6;
+}
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2A2A2A; border-radius: 2px; }
+button { font-family: 'DM Sans', sans-serif; cursor: pointer; }
+input, textarea, select { font-family: 'DM Sans', sans-serif; }
+@keyframes fadeUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+.fade-up { animation: fadeUp 0.25s ease forwards; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+// ── DESIGN TOKENS ────────────────────────────────────────────────────────
+const C = {
+  primary: '#E8690A', primaryDim: 'rgba(232,105,10,0.12)', primaryMid: 'rgba(232,105,10,0.25)',
+  bg: '#0A0A0A', s1: '#111111', s2: '#1A1A1A', border: '#2A2A2A',
+  t1: '#F5F5F5', t2: '#888888', t3: '#555555',
+  success: '#22C55E', warning: '#F59E0B', danger: '#EF4444', info: '#3B82F6', purple: '#8B5CF6',
+};
+
+// ── ICONS ────────────────────────────────────────────────────────────────
+const I = ({ n, s=16, c='currentColor', strokeWidth=1.8 }) => {
+  const d = {
+    dashboard: 'M3 3h7v7H3zm11 0h7v7h-7zM3 14h7v7H3zm11 3h2m4 0h-2m-2-3v2m0 4v-2',
+    finance: 'M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6',
+    clients: 'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75',
+    projects: 'M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z',
+    team: 'M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z',
+    stock: 'M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z',
+    services: 'M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z',
+    drive: 'M3 15l5.12-9.22A2 2 0 019.86 5h4.28a2 2 0 011.74 1.01L21 15M3 15h18M3 15l-1 4h20l-1-4',
+    messages: 'M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z',
+    templates: 'M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8',
+    journal: 'M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2zM22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z',
+    settings: 'M12 15a3 3 0 100-6 3 3 0 000 6zM19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 012.83-2.83l-.06-.06A1.65 1.65 0 0021 10.6a1.65 1.65 0 00-1.82-.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 0015 4.6a1.65 1.65 0 00-1.82.33l-.06.06A2 2 0 018.29 2.1l.06-.06A1.65 1.65 0 004.6 3a1.65 1.65 0 00-.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06A1.65 1.65 0 000 9.4a1.65 1.65 0 00.33 1.82l.06.06A2 2 0 012.22 14.1',
+    bell: 'M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0',
+    search: 'M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z',
+    plus: 'M12 5v14M5 12h14',
+    eye: 'M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 9a3 3 0 100 6 3 3 0 000-6z',
+    lock: 'M19 11H5a2 2 0 00-2 2v7a2 2 0 002 2h14a2 2 0 002-2v-7a2 2 0 00-2-2zM7 11V7a5 5 0 0110 0v4',
+    mail: 'M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm18 2l-10 7L2 6',
+    logout: 'M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9',
+    menu: 'M3 12h18M3 6h18M3 18h18',
+    send: 'M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z',
+    attach: 'M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48',
+    arrow_r: 'M5 12h14M12 5l7 7-7 7',
+    check: 'M20 6L9 17l-5-5',
+    trending: 'M23 6l-9.5 9.5-5-5L1 18M17 6h6v6',
+    up: 'M12 19V5M5 12l7-7 7 7',
+    down: 'M12 5v14M19 12l-7 7-7-7',
+    kanban: 'M3 3h5v18H3zM9.5 3h5v11h-5zM16 3h5v15h-5z',
+    timeline: 'M3 12h18M3 6h18M3 18h18M8 6v12M16 6v12',
+    edit: 'M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z',
+    trash: 'M3 6h18M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6M10 11v6M14 11v6M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2',
+    download: 'M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3',
+    filter: 'M22 3H2l8 9.46V19l4 2v-8.54L22 3z',
+    calendar: 'M3 4h18v18H3zM16 2v4M8 2v4M3 10h18',
+    notifications: 'M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0',
+    folder: 'M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z',
+    close: 'M18 6L6 18M6 6l12 12',
+    user: 'M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2M12 11a4 4 0 100-8 4 4 0 000 8z',
+    upload: 'M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12',
+    chart: 'M18 20V10M12 20V4M6 20v-6M2 20h20',
+    invoice: 'M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8',
+    prospect: 'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75',
+  };
+  return (
+    <svg width={s} height={s} viewBox="0 0 24 24" fill="none" stroke={c} strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round">
+      {d[n] ? d[n].split('M').filter(Boolean).map((p,i) => <path key={i} d={'M'+p}/>) : <circle cx="12" cy="12" r="4"/>}
+    </svg>
+  );
+};
+
+// ── BADGE ────────────────────────────────────────────────────────────────
+const Badge = ({ label, color = C.t2, small = false }) => (
+  <span style={{ display:'inline-flex', alignItems:'center', gap:4, background:`${color}18`, color, borderRadius:4, padding: small ? '2px 6px' : '3px 8px', fontSize: small ? 9 : 10, fontWeight:700, letterSpacing:'0.05em', textTransform:'uppercase', whiteSpace:'nowrap', fontFamily:'JetBrains Mono, monospace' }}>
+    {label}
+  </span>
+);
+
+// ── STAT CARD ────────────────────────────────────────────────────────────
+const StatCard = ({ label, value, sub, delta, trend, color=C.primary, icon }) => (
+  <div className="fade-up" style={{ background:C.s1, border:`1px solid ${C.border}`, borderRadius:8, padding:'18px 20px', display:'flex', flexDirection:'column', gap:10, transition:'transform 0.15s', cursor:'default' }}
+    onMouseEnter={e=>e.currentTarget.style.transform='translateY(-2px)'}
+    onMouseLeave={e=>e.currentTarget.style.transform='translateY(0)'}>
+    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
+      <span style={{ fontSize:11, color:C.t3, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.08em' }}>{label}</span>
+      {icon && <div style={{ width:30, height:30, borderRadius:7, background:`${color}18`, display:'flex', alignItems:'center', justifyContent:'center' }}><I n={icon} s={15} c={color}/></div>}
+    </div>
+    <div style={{ fontSize:28, fontWeight:700, fontFamily:'Montserrat', color:C.t1, letterSpacing:'0.02em', lineHeight:1 }}>{value}</div>
+    <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+      {delta && <span style={{ fontSize:11, fontWeight:600, color: trend==='up'?C.success:C.danger, display:'flex', alignItems:'center', gap:2 }}>
+        <I n={trend==='up'?'up':'down'} s={10} c={trend==='up'?C.success:C.danger}/>{delta}
+      </span>}
+      {sub && <span style={{ fontSize:11, color:C.t3 }}>{sub}</span>}
+    </div>
+  </div>
+);
+
+// ── MINI BAR CHART ───────────────────────────────────────────────────────
+const MiniBar = ({ data, color=C.primary, h=60 }) => {
+  const max = Math.max(...data.map(d=>d.v));
+  return (
+    <div style={{ display:'flex', alignItems:'flex-end', gap:4, height:h }}>
+      {data.map((d,i) => (
+        <div key={i} style={{ flex:1, display:'flex', flexDirection:'column', alignItems:'center', gap:3 }}>
+          <div style={{ width:'100%', background:`${color}${i===data.length-1?'ff':'55'}`, borderRadius:'2px 2px 0 0', height:`${(d.v/max)*(h-14)}px`, minHeight:3 }}></div>
+          <span style={{ fontSize:9, color:C.t3, fontFamily:'JetBrains Mono', whiteSpace:'nowrap' }}>{d.l}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// ── PROGRESS BAR ─────────────────────────────────────────────────────────
+const ProgressBar = ({ value, color=C.primary, h=4 }) => (
+  <div style={{ height:h, background:`${C.border}`, borderRadius:h/2, overflow:'hidden' }}>
+    <div style={{ height:'100%', width:`${value}%`, background:color, borderRadius:h/2, transition:'width 0.8s ease' }}></div>
+  </div>
+);
+
+// ── DONUT ────────────────────────────────────────────────────────────────
+const Donut = ({ value, size=56, color=C.primary, label }) => {
+  const r=22, circ=2*Math.PI*r, dash=(value/100)*circ;
+  return (
+    <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:4 }}>
+      <svg width={size} height={size} viewBox="0 0 56 56">
+        <circle cx="28" cy="28" r={r} fill="none" stroke={C.border} strokeWidth="6"/>
+        <circle cx="28" cy="28" r={r} fill="none" stroke={color} strokeWidth="6"
+          strokeDasharray={`${dash} ${circ-dash}`} strokeLinecap="round" transform="rotate(-90 28 28)"/>
+        <text x="28" y="33" textAnchor="middle" fontSize="11" fontWeight="700" fill={C.t1} fontFamily="Montserrat">{value}%</text>
+      </svg>
+      {label && <span style={{ fontSize:10, color:C.t2, textAlign:'center' }}>{label}</span>}
+    </div>
+  );
+};
+
+// ── TWEAK DEFAULTS ───────────────────────────────────────────────────────
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentColor": "#E8690A",
+  "role": "super_admin"
+}/*EDITMODE-END*/;
+
+// ── SIDEBAR CONFIG BY ROLE ───────────────────────────────────────────────
+const NAV_BY_ROLE = {
+  super_admin: [
+    { id:'dashboard', label:'Dashboard', icon:'dashboard' },
+    { id:'finance', label:'Finance', icon:'finance', sub:['Devis','Factures','Journal','Bilan'] },
+    { id:'clients', label:'Clients', icon:'clients', sub:['Pipeline','Fiches','Prospects'] },
+    { id:'projects', label:'Projets', icon:'projects', sub:['Kanban','Timeline'] },
+    { id:'team', label:'Équipe', icon:'team', sub:['Membres','Prestataires','Recrutement'] },
+    { id:'stock', label:'Stock', icon:'stock', sub:['Catalogue','Locations'] },
+    { id:'services', label:'Services', icon:'services' },
+    { divider: true },
+    { id:'drive', label:'Drive', icon:'drive' },
+    { id:'messages', label:'Messagerie', icon:'messages', badge:3 },
+    { id:'templates', label:'Templates', icon:'templates' },
+    { id:'journal', label:'Journal de bord', icon:'journal' },
+    { id:'notifications', label:'Notifications', icon:'notifications', badge:4 },
+    { divider: true },
+    { id:'settings', label:'Paramètres', icon:'settings' },
+  ],
+  admin: [
+    { id:'dashboard', label:'Dashboard', icon:'dashboard' },
+    { id:'finance', label:'Finance', icon:'finance', sub:['Devis','Factures','Journal'] },
+    { id:'clients', label:'Clients', icon:'clients', sub:['Pipeline','Fiches','Prospects'] },
+    { id:'projects', label:'Projets', icon:'projects' },
+    { id:'drive', label:'Drive', icon:'drive' },
+    { id:'messages', label:'Messagerie', icon:'messages', badge:2 },
+    { id:'templates', label:'Templates', icon:'templates' },
+    { id:'team', label:'Utilisateurs', icon:'team' },
+  ],
+  staff: [
+    { id:'dashboard', label:'Mes missions', icon:'dashboard' },
+    { id:'projects', label:'Mes livrables', icon:'projects' },
+    { id:'messages', label:'Messagerie', icon:'messages', badge:1 },
+    { id:'profile', label:'Mon profil', icon:'user' },
+  ],
+  prestataire: [
+    { id:'dashboard', label:'Mes missions', icon:'dashboard' },
+    { id:'projects', label:'Mes livraisons', icon:'upload' },
+    { id:'messages', label:'Messages', icon:'messages' },
+    { id:'profile', label:'Mon compte', icon:'user' },
+  ],
+  client: [
+    { id:'dashboard', label:'Avancement', icon:'chart' },
+    { id:'projects', label:'Livrables', icon:'folder' },
+    { id:'finance', label:'Factures', icon:'invoice' },
+    { id:'messages', label:'Actualités', icon:'notifications' },
+  ],
+};
+
+const ROLE_LABELS = {
+  super_admin: { label:'Super Admin', icon:'👑', color:C.primary },
+  admin: { label:'Administrateur', icon:'📋', color:C.info },
+  staff: { label:'Staff', icon:'🎨', color:C.purple },
+  prestataire: { label:'Prestataire', icon:'⚡', color:C.warning },
+  client: { label:'Client', icon:'🏢', color:C.success },
+};
+
+// ── SIDEBAR ──────────────────────────────────────────────────────────────
+const Sidebar = ({ active, onNav, role, collapsed, accent, onLogout }) => {
+  const nav = NAV_BY_ROLE[role] || NAV_BY_ROLE.super_admin;
+  const rl = ROLE_LABELS[role];
+  return (
+    <div style={{ width:collapsed?56:240, background:C.s1, borderRight:`1px solid ${C.border}`, display:'flex', flexDirection:'column', transition:'width 0.2s ease', flexShrink:0, height:'100%', overflow:'hidden' }}>
+      {/* Logo */}
+      <div style={{ height:56, display:'flex', alignItems:'center', gap:10, padding:collapsed?'0 12px':'0 16px', borderBottom:`1px solid ${C.border}`, flexShrink:0, justifyContent:collapsed?'center':'flex-start' }}>
+        <div style={{ width:30, height:30, borderRadius:7, background:accent, display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
+          <span style={{ fontFamily:'Montserrat', fontSize:18, color:'#fff', letterSpacing:'0.5px' }}>Y</span>
+        </div>
+        {!collapsed && (
+          <div>
+            <div style={{ fontFamily:'Montserrat', fontSize:16, color:C.t1, letterSpacing:'1.5px', lineHeight:1 }}>YESHCOM</div>
+            <div style={{ fontSize:9, color:accent, fontFamily:'JetBrains Mono', letterSpacing:'2px' }}>OS v2.0</div>
+          </div>
+        )}
+      </div>
+      {/* Nav */}
+      <nav style={{ flex:1, padding:'8px 6px', overflowY:'auto', display:'flex', flexDirection:'column', gap:1 }}>
+        {nav.map((item, i) => {
+          if (item.divider) return <div key={i} style={{ height:1, background:C.border, margin:'6px 0' }}></div>;
+          const isActive = active === item.id;
+          return (
+            <button key={item.id} onClick={() => onNav(item.id)}
+              title={collapsed ? item.label : ''}
+              style={{ display:'flex', alignItems:'center', gap:9, padding:collapsed?'9px 0':'9px 10px', borderRadius:6, border:'none', background:isActive?`${accent}18`:'transparent', color:isActive?accent:C.t2, cursor:'pointer', textAlign:'left', width:'100%', justifyContent:collapsed?'center':'flex-start', position:'relative', transition:'all 0.12s' }}
+              onMouseEnter={e=>{ if(!isActive) e.currentTarget.style.background=C.s2; e.currentTarget.style.color=C.t1; }}
+              onMouseLeave={e=>{ if(!isActive) { e.currentTarget.style.background='transparent'; e.currentTarget.style.color=C.t2; } }}>
+              <I n={item.icon} s={15} c={isActive?accent:undefined}/>
+              {!collapsed && <span style={{ fontSize:12, fontWeight:isActive?600:400, flex:1 }}>{item.label}</span>}
+              {!collapsed && item.badge > 0 && (
+                <span style={{ background:accent, color:'#fff', borderRadius:10, padding:'1px 6px', fontSize:9, fontWeight:700, fontFamily:'JetBrains Mono' }}>{item.badge}</span>
+              )}
+              {!collapsed && isActive && (
+                <div style={{ position:'absolute', right:0, top:'50%', transform:'translateY(-50%)', width:2, height:16, background:accent, borderRadius:'2px 0 0 2px' }}></div>
+              )}
+            </button>
+          );
+        })}
+      </nav>
+      {/* User */}
+      <div style={{ padding:'8px 6px', borderTop:`1px solid ${C.border}`, flexShrink:0 }}>
+        <div style={{ display:'flex', alignItems:'center', gap:9, padding:collapsed?'8px 0':'8px 10px', justifyContent:collapsed?'center':'flex-start' }}>
+          <div style={{ width:28, height:28, borderRadius:'50%', background:`${accent}25`, border:`1.5px solid ${accent}50`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:12, color:accent, flexShrink:0 }}>{rl.icon}</div>
+          {!collapsed && (
+            <div style={{ flex:1, minWidth:0 }}>
+              <div style={{ fontSize:11, fontWeight:600, color:C.t1, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{role==='super_admin'?'Israel Irie':role==='admin'?'Responsable Admin':rl.label}</div>
+              <div style={{ fontSize:9, color:accent, fontFamily:'JetBrains Mono', letterSpacing:'0.05em' }}>{rl.label}</div>
+            </div>
+          )}
+          {!collapsed && <button onClick={onLogout} style={{ background:'none', border:'none', color:C.t3, padding:4, borderRadius:4 }} title="Déconnexion"><I n="logout" s={13}/></button>}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ── TOPBAR ───────────────────────────────────────────────────────────────
+const Topbar = ({ title, onToggle, accent, onSearch }) => {
+  const [q, setQ] = useState('');
+  const now = new Date();
+  const day = now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  return (
+    <div style={{ height:56, background:C.s1, borderBottom:`1px solid ${C.border}`, display:'flex', alignItems:'center', gap:12, padding:'0 20px', flexShrink:0 }}>
+      <button onClick={onToggle} style={{ background:'none', border:'none', color:C.t2, padding:6, borderRadius:6 }}><I n="menu" s={18}/></button>
+      <div style={{ flex:1 }}>
+        <div style={{ fontSize:13, fontWeight:700, fontFamily:'DM Sans', color:C.t1 }}>{title}</div>
+        <div style={{ fontSize:10, color:C.t3, fontFamily:'JetBrains Mono', textTransform:'capitalize' }}>{day}</div>
+      </div>
+      {/* Search ⌘K */}
+      <div onClick={onSearch} style={{ display:'flex', alignItems:'center', gap:8, background:C.s2, border:`1px solid ${C.border}`, borderRadius:6, padding:'6px 12px', width:200, cursor:'pointer' }}
+        onMouseEnter={e=>e.currentTarget.style.borderColor=accent}
+        onMouseLeave={e=>e.currentTarget.style.borderColor=C.border}>
+        <I n="search" s={13} c={C.t3}/>
+        <span style={{ fontSize:12, color:C.t3, flex:1 }}>Rechercher…</span>
+        <span style={{ fontSize:9, color:C.t3, fontFamily:'JetBrains Mono', background:C.border, borderRadius:3, padding:'1px 4px' }}>⌘K</span>
+      </div>
+      {/* Bell */}
+      <button style={{ position:'relative', background:'none', border:'none', color:C.t2, padding:8, borderRadius:6 }}>
+        <I n="bell" s={17}/>
+        <div style={{ position:'absolute', top:6, right:6, width:6, height:6, borderRadius:'50%', background:accent }}></div>
+      </button>
+    </div>
+  );
+};
+
+// ══════════════════════════════════════════════════════════════════════════
+// MODULES
+// ══════════════════════════════════════════════════════════════════════════
+
+// ── DASHBOARD FONDATEURS ─────────────────────────────────────────────────
+const DashboardFounder = ({ accent }) => {
+  const kpis = [
+    { label:'CA ce mois', value:'850K FCFA', delta:'+12%', trend:'up', icon:'finance', color:accent },
+    { label:'Clients actifs', value:'3', sub:'sur 8 total', icon:'clients', color:C.info },
+    { label:'Tâches en retard', value:'1', delta:'-2', trend:'down', icon:'projects', color:C.warning },
+    { label:'Factures impayées', value:'2', sub:'250 000 FCFA', icon:'invoice', color:C.danger },
+  ];
+  const projets = [
+    { name:'New Sylvia', client:'Sylvia Events', progress:78, status:'En cours', deadline:'15 Mai', col:C.success },
+    { name:'KAAG Digital', client:'KAAG', progress:55, status:'En cours', deadline:'30 Mai', col:C.success },
+    { name:'OTC Audit', client:'OTC Group', progress:30, status:'Attention', deadline:'8 Mai', col:C.warning },
+  ];
+  const revData = [{l:'Nov',v:620},{l:'Déc',v:750},{l:'Jan',v:580},{l:'Fév',v:820},{l:'Mar',v:710},{l:'Avr',v:940},{l:'Mai',v:850}];
+  const feed = [
+    { time:'14h00', user:'Mamadou', action:'a déplacé', target:'OTC Audit → Révision', icon:'👑' },
+    { time:'11h30', user:'Admin', action:'a créé', target:'FAC-2026-008', icon:'📋' },
+    { time:'09h15', user:'Système', action:'Nouveau prospect :', target:'Cabinet Diallo', icon:'🔔' },
+    { time:'08h50', user:'Mamadou', action:'a validé livrable', target:'New Sylvia — Post Reel', icon:'👑' },
+  ];
+  const prospects = [
+    { name:'Cabinet Diallo', statut:'PROSPECTION', color:C.t2 },
+    { name:'BankPlus CI', statut:'PROPOSITION', color:C.info },
+    { name:'ENIE SA', statut:'NÉGOCIATION', color:C.purple },
+  ];
+  return (
+    <div style={{ flex:1, overflowY:'auto', padding:24, display:'flex', flexDirection:'column', gap:20 }}>
+      {/* Greeting */}
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start' }}>
+        <div>
+          <div style={{ fontFamily:'Montserrat', fontSize:32, color:C.t1, letterSpacing:'1px', lineHeight:1 }}>
+            🌅 Bonjour Israel
+          </div>
+          <div style={{ fontSize:12, color:C.t2, marginTop:4 }}>Vendredi 2 mai 2026 · <span style={{ color:C.success }}>● Santé de l'agence : Bonne</span></div>
+        </div>
+        <div style={{ display:'flex', gap:6 }}>
+          <Badge label="3 alertes prioritaires" color={C.warning}/>
+        </div>
+      </div>
+      {/* KPIs */}
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:12 }}>
+        {kpis.map((k,i) => <StatCard key={i} {...k}/>)}
+      </div>
+      {/* Row 2 */}
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
+        {/* Revenue */}
+        <div style={{ background:C.s1, border:`1px solid ${C.border}`, borderRadius:8, padding:'18px 20px' }}>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:16 }}>
+            <div>
+              <div style={{ fontSize:12, fontWeight:600, color:C.t1 }}>Courbe CA — 7 mois glissants</div>
+              <div style={{ fontSize:10, color:C.t3, fontFamily:'JetBrains Mono' }}>en milliers FCFA</div>
+            </div>
+            <div style={{ display:'flex', alignItems:'center', gap:4, fontSize:11, color:C.success, fontWeight:600 }}>
+              <I n="trending" s={13} c={C.success}/>+18.2% YoY
+            </div>
+          </div>
+          <MiniBar data={revData} color={accent} h={72}/>
+        </div>
+        {/* Projets actifs */}
+        <div style={{ background:C.s1, border:`1px solid ${C.border}`, borderRadius:8, padding:'18px 20px' }}>
+          <div style={{ fontSize:12, fontWeight:600, color:C.t1, marginBottom:14 }}>Projets actifs</div>
+          <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
+            {projets.map((p,i) => (
+              <div key={i}>
+                <div style={{ display:'flex', justifyContent:'space-between', marginBottom:5, alignItems:'center' }}>
+                  <div>
+                    <span style={{ fontSize:12, fontWeight:600, color:C.t1 }}>{p.name}</span>
+                    <span style={{ fontSize:10, color:C.t2, marginLeft:8 }}>{p.client}</span>
+                  </div>
+                  <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+                    <span style={{ fontSize:10, color:C.t3, fontFamily:'JetBrains Mono' }}>{p.deadline}</span>
+                    <Badge label={p.status} color={p.col} small/>
+                  </div>
+                </div>
+                <ProgressBar value={p.progress} color={p.col}/>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      {/* Row 3 */}
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 320px', gap:12 }}>
+        {/* Feed activité */}
+        <div style={{ background:C.s1, border:`1px solid ${C.border}`, borderRadius:8, padding:'18px 20px' }}>
+          <div style={{ fontSize:12, fontWeight:600, color:C.t1, marginBottom:14 }}>Feed d'activité temps réel</div>
+          <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
+            {feed.map((f,i) => (
+              <div key={i} style={{ display:'flex', alignItems:'center', gap:10, padding:'8px 10px', background:C.s2, borderRadius:6 }}>
+                <span style={{ fontSize:14 }}>{f.icon}</span>
+                <div style={{ flex:1 }}>
+                  <span style={{ fontSize:12, fontWeight:600, color:C.t1 }}>{f.user}</span>
+                  <span style={{ fontSize:12, color:C.t2 }}> {f.action} </span>
+                  <span style={{ fontSize:12, color:accent, fontWeight:500 }}>{f.target}</span>
+                </div>
+                <span style={{ fontSize:10, color:C.t3, fontFamily:'JetBrains Mono', flexShrink:0 }}>{f.time}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Prospection */}
+        <div style={{ background:C.s1, border:`1px solid ${C.border}`, borderRadius:8, padding:'18px 20px' }}>
+          <div style={{ fontSize:12, fontWeight:600, color:C.t1, marginBottom:6 }}>Prospection ce mois</div>
+          <div style={{ display:'flex', gap:16, marginBottom:14 }}>
+            <div><div style={{ fontFamily:'Montserrat', fontSize:24, color:C.t1 }}>5</div><div style={{ fontSize:9, color:C.t3 }}>CONTACTÉS</div></div>
+            <div><div style={{ fontFamily:'Montserrat', fontSize:24, color:C.t1 }}>2</div><div style={{ fontSize:9, color:C.t3 }}>PROPOSITIONS</div></div>
+            <div><div style={{ fontFamily:'Montserrat', fontSize:24, color:accent }}>40%</div><div style={{ fontSize:9, color:C.t3 }}>CONVERSION</div></div>
+          </div>
+          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+            {prospects.map((p,i) => (
+              <div key={i} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'7px 10px', background:C.s2, borderRadius:6 }}>
+                <span style={{ fontSize:12, color:C.t1, fontWeight:500 }}>{p.name}</span>
+                <Badge label={p.statut} color={p.color} small/>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ── FINANCE MODULE ────────────────────────────────────────────────────────
+const FinanceModule = ({ accent }) => {
+  const [tab, setTab] = useState('factures');
+  const factures = [
+    { ref:'FAC-2026-008', client:'Cabinet Diallo', type:'Acompte 50%', montant:'250 000', statut:'EN ATTENTE', emission:'02/05/2026', echeance:'02/06/2026' },
+    { ref:'FAC-2026-007', client:'New Sylvia', type:'Solde', montant:'180 000', statut:'PAYÉE', emission:'25/04/2026', echeance:'25/05/2026' },
+    { ref:'FAC-2026-006', client:'OTC Group', type:'Intermédiaire', montant:'320 000', statut:'EN RETARD', emission:'10/04/2026', echeance:'10/05/2026' },
+    { ref:'FAC-2026-005', client:'KAAG Digital', type:'Acompte 50%', montant:'450 000', statut:'PAYÉE', emission:'01/04/2026', echeance:'01/05/2026' },
+    { ref:'FAC-2026-004', client:'BankPlus CI', type:'Solde', montant:'890 000', statut:'CRITIQUE', emission:'01/03/2026', echeance:'01/04/2026' },
+  ];
+  const devis = [
+    { ref:'DEV-2026-012', client:'ENIE SA', services:'Branding + Site Web', montant:'1 200 000', statut:'ENVOYÉ', date:'28/04/2026' },
+    { ref:'DEV-2026-011', client:'Cabinet Diallo', services:'Identité Visuelle', montant:'350 000', statut:'ACCEPTÉ', date:'20/04/2026' },
+    { ref:'DEV-2026-010', client:'BankPlus CI', services:'Application Mobile', montant:'2 100 000', statut:'BROUILLON', date:'15/04/2026' },
+  ];
+  const journal = [
+    { date:'02/05', type:'ENTRÉE', cat:'Paiement client', desc:'Acompte — New Sylvia', montant:'+180 000', color:C.success },
+    { date:'30/04', type:'SORTIE', cat:'Prestataire', desc:'Paiement — Yann (montage)', montant:'-45 000', color:C.danger },
+    { date:'28/04', type:'SORTIE', cat:'Fournisseur', desc:'Location matériel BCC', montant:'-120 000', color:C.danger },
+    { date:'25/04', type:'ENTRÉE', cat:'Paiement client', desc:'Solde — KAAG Digital', montant:'+450 000', color:C.success },
+  ];
+  const statusColors = { 'PAYÉE':C.success, 'EN ATTENTE':C.warning, 'EN RETARD':C.primary, 'CRITIQUE':C.danger, 'BROUILLON':C.t2, 'ENVOYÉ':C.info, 'ACCEPTÉ':C.success };
+  const tabs = [
+    {id:'factures',label:'Factures'},
+    {id:'devis',label:'Devis'},
+    {id:'journal',label:'Journal'},
+  ];
+  return (
+    <div style={{ flex:1, overflowY:'auto', padding:24, display:'flex', flexDirection:'column', gap:16 }}>
+      {/* Summary */}
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:10 }}>
+        {[
+          {label:'CA Mai 2026', value:'850 000 FCFA', color:accent},
+          {label:'Encaissé', value:'630 000 FCFA', color:C.success},
+          {label:'À encaisser', value:'220 000 FCFA', color:C.warning},
+          {label:'Retards critiques', value:'890 000 FCFA', color:C.danger},
+        ].map((s,i) => (
+          <div key={i} style={{ background:C.s1, border:`1px solid ${C.border}`, borderRadius:8, padding:'14px 16px' }}>
+            <div style={{ fontSize:9, color:C.t3, textTransform:'uppercase', letterSpacing:'0.08em', marginBottom:6, fontFamily:'JetBrains Mono' }}>{s.label}</div>
+            <div style={{ fontFamily:'Montserrat', fontSize:22, color:s.color, letterSpacing:'0.03em' }}>{s.value}</div>
+          </div>
+        ))}
+      </div>
+      {/* Tabs */}
+      <div style={{ display:'flex', gap:1, background:C.s2, borderRadius:8, padding:3, width:'fit-content', border:`1px solid ${C.border}` }}>
+        {tabs.map(t => (
+          <button key={t.id} onClick={()=>setTab(t.id)} style={{ padding:'6px 16px', borderRadius:6, border:'none', background:tab===t.id?C.s1:'transparent', color:tab===t.id?C.t1:C.t2, fontSize:12, fontWeight:tab===t.id?600:400, cursor:'pointer', transition:'all 0.12s' }}>{t.label}</button>
+        ))}
+      </div>
+      {/* Content */}
+      <div style={{ background:C.s1, border:`1px solid ${C.border}`, borderRadius:8, overflow:'hidden' }}>
+        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'14px 20px', borderBottom:`1px solid ${C.border}` }}>
+          <span style={{ fontSize:12, fontWeight:600, color:C.t1 }}>{tabs.find(t=>t.id===tab)?.label}</span>
+          <div style={{ display:'flex', gap:6 }}>
+            <button style={{ display:'flex', alignItems:'center', gap:5, background:C.s2, border:`1px solid ${C.border}`, borderRadius:6, padding:'6px 11px', color:C.t2, fontSize:11, cursor:'pointer' }}><I n="filter" s={12}/>Filtrer</button>
+            <button style={{ display:'flex', alignItems:'center', gap:5, background:accent, border:'none', borderRadius:6, padding:'6px 12px', color:'#fff', fontSize:11, fontWeight:600, cursor:'pointer' }}><I n="plus" s={12} c="#fff"/>Nouveau</button>
+          </div>
+        </div>
+        {tab === 'factures' && (
+          <table style={{ width:'100%', borderCollapse:'collapse' }}>
+            <thead>
+              <tr style={{ background:`${C.s2}` }}>
+                {['Référence','Client','Type','Montant (FCFA)','Statut','Émission','Échéance','Actions'].map(h => (
+                  <th key={h} style={{ textAlign:'left', fontSize:9, color:C.t3, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.08em', padding:'9px 20px', borderBottom:`1px solid ${C.border}`, fontFamily:'JetBrains Mono' }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {factures.map((f,i) => (
+                <tr key={i} style={{ borderBottom:`1px solid ${C.border}`, cursor:'pointer' }}
+                  onMouseEnter={e=>e.currentTarget.style.background=C.s2}
+                  onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+                  <td style={{ padding:'11px 20px', fontSize:11, color:accent, fontWeight:600, fontFamily:'JetBrains Mono' }}>{f.ref}</td>
+                  <td style={{ padding:'11px 20px', fontSize:12, color:C.t1, fontWeight:500 }}>{f.client}</td>
+                  <td style={{ padding:'11px 20px', fontSize:11, color:C.t2 }}>{f.type}</td>
+                  <td style={{ padding:'11px 20px', fontSize:12, color:C.t1, fontWeight:700 }}>{f.montant}</td>
+                  <td style={{ padding:'11px 20px' }}><Badge label={f.statut} color={statusColors[f.statut]||C.t2} small/></td>
+                  <td style={{ padding:'11px 20px', fontSize:10, color:C.t3, fontFamily:'JetBrains Mono' }}>{f.emission}</td>
+                  <td style={{ padding:'11px 20px', fontSize:10, color:C.t3, fontFamily:'JetBrains Mono' }}>{f.echeance}</td>
+                  <td style={{ padding:'11px 20px' }}>
+                    <div style={{ display:'flex', gap:4 }}>
+                      {[{n:'eye'},{n:'edit'},{n:'download'}].map(({n})=>(
+                        <button key={n} style={{ background:'none', border:'none', color:C.t3, padding:4, borderRadius:4, cursor:'pointer' }}
+                          onMouseEnter={e=>e.currentTarget.style.color=accent}
+                          onMouseLeave={e=>e.currentTarget.style.color=C.t3}><I n={n} s={13}/></button>
+                      ))}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        {tab === 'devis' && (
+          <table style={{ width:'100%', borderCollapse:'collapse' }}>
+            <thead><tr style={{ background:C.s2 }}>
+              {['Référence','Client','Services','Montant','Statut','Date','Actions'].map(h=>(
+                <th key={h} style={{ textAlign:'left', fontSize:9, color:C.t3, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.08em', padding:'9px 20px', borderBottom:`1px solid ${C.border}`, fontFamily:'JetBrains Mono' }}>{h}</th>
+              ))}
+            </tr></thead>
+            <tbody>{devis.map((d,i)=>(
+              <tr key={i} style={{ borderBottom:`1px solid ${C.border}` }}
+                onMouseEnter={e=>e.currentTarget.style.background=C.s2}
+                onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+                <td style={{ padding:'11px 20px', fontSize:11, color:accent, fontWeight:600, fontFamily:'JetBrains Mono' }}>{d.ref}</td>
+                <td style={{ padding:'11px 20px', fontSize:12, color:C.t1, fontWeight:500 }}>{d.client}</td>
+                <td style={{ padding:'11px 20px', fontSize:11, color:C.t2 }}>{d.services}</td>
+                <td style={{ padding:'11px 20px', fontSize:12, color:C.t1, fontWeight:700 }}>{d.montant}</td>
+                <td style={{ padding:'11px 20px' }}><Badge label={d.statut} color={statusColors[d.statut]||C.t2} small/></td>
+                <td style={{ padding:'11px 20px', fontSize:10, color:C.t3, fontFamily:'JetBrains Mono' }}>{d.date}</td>
+                <td style={{ padding:'11px 20px' }}>
+                  <div style={{ display:'flex', gap:4 }}>
+                    {[{n:'eye'},{n:'edit'},{n:'download'}].map(({n})=>(
+                      <button key={n} style={{ background:'none', border:'none', color:C.t3, padding:4, borderRadius:4, cursor:'pointer' }}><I n={n} s={13}/></button>
+                    ))}
+                  </div>
+                </td>
+              </tr>
+            ))}</tbody>
+          </table>
+        )}
+        {tab === 'journal' && (
+          <table style={{ width:'100%', borderCollapse:'collapse' }}>
+            <thead><tr style={{ background:C.s2 }}>
+              {['Date','Type','Catégorie','Description','Montant FCFA'].map(h=>(
+                <th key={h} style={{ textAlign:'left', fontSize:9, color:C.t3, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.08em', padding:'9px 20px', borderBottom:`1px solid ${C.border}`, fontFamily:'JetBrains Mono' }}>{h}</th>
+              ))}
+            </tr></thead>
+            <tbody>{journal.map((j,i)=>(
+              <tr key={i} style={{ borderBottom:`1px solid ${C.border}` }}
+                onMouseEnter={e=>e.currentTarget.style.background=C.s2}
+                onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+                <td style={{ padding:'11px 20px', fontSize:10, color:C.t3, fontFamily:'JetBrains Mono' }}>{j.date}</td>
+                <td style={{ padding:'11px 20px' }}><Badge label={j.type} color={j.color} small/></td>
+                <td style={{ padding:'11px 20px', fontSize:11, color:C.t2 }}>{j.cat}</td>
+                <td style={{ padding:'11px 20px', fontSize:12, color:C.t1 }}>{j.desc}</td>
+                <td style={{ padding:'11px 20px', fontSize:13, fontWeight:700, color:j.color, fontFamily:'JetBrains Mono' }}>{j.montant}</td>
+              </tr>
+            ))}</tbody>
+          </table>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// ── CLIENTS / CRM MODULE ──────────────────────────────────────────────────
+const ClientsModule = ({ accent }) => {
+  const [view, setView] = useState('pipeline');
+  const pipeline = [
+    { stage:'PROSPECT', color:C.t2, deals:[
+      {name:'Cabinet Diallo', contact:'Me Diallo', value:'350K', icon:'🏛️'},
+      {name:'Studio Wax', contact:'Koffi A.', value:'180K', icon:'🎵'},
+    ]},
+    { stage:'DÉCOUVERTE', color:C.info, deals:[
+      {name:'BankPlus CI', contact:'Dir. Comm.', value:'2.1M', icon:'🏦'},
+    ]},
+    { stage:'PROPOSITION', color:accent, deals:[
+      {name:'ENIE SA', contact:'DG Coulibaly', value:'980K', icon:'⚡'},
+      {name:'Air Côte d\'Ivoire', contact:'Marketing', value:'620K', icon:'✈️'},
+    ]},
+    { stage:'NÉGOCIATION', color:C.purple, deals:[
+      {name:'SONATRACH', contact:'Dir. IT', value:'1.4M', icon:'🛢️'},
+    ]},
+    { stage:'ACTIF', color:C.success, deals:[
+      {name:'New Sylvia', contact:'Mme Sylvia', value:'360K', icon:'💎'},
+      {name:'KAAG Digital', contact:'KAAG', value:'900K', icon:'🌍'},
+      {name:'OTC Group', contact:'DG OTC', value:'640K', icon:'📦'},
+    ]},
+  ];
+  const clients = [
+    { nom:'New Sylvia Events', type:'Events', statut:'ACTIF', responsable:'Mamadou', ca:'360 000', contact:'Mme Sylvia', col:C.success },
+    { nom:'KAAG Digital', type:'Digital', statut:'ACTIF', responsable:'Israel', ca:'900 000', contact:'Dir. KAAG', col:C.success },
+    { nom:'OTC Group', type:'Commerce', statut:'LIVRAISON', responsable:'Mamadou', ca:'640 000', contact:'DG OTC', col:accent },
+    { nom:'BankPlus CI', type:'Finance', statut:'NÉGOCIATION', responsable:'Israel', ca:'2 100 000', contact:'Dir. Comm.', col:C.purple },
+  ];
+  const statusColors2 = { ACTIF:C.success, LIVRAISON:accent, NÉGOCIATION:C.purple, CLÔTURÉ:C.t2 };
+  return (
+    <div style={{ flex:1, overflowY:'auto', padding:24, display:'flex', flexDirection:'column', gap:16 }}>
+      {/* Toggle */}
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+        <div style={{ display:'flex', gap:1, background:C.s2, borderRadius:8, padding:3, border:`1px solid ${C.border}` }}>
+          {[{id:'pipeline',label:'Pipeline Kanban'},{id:'fiches',label:'Fiches clients'}].map(v=>(
+            <button key={v.id} onClick={()=>setView(v.id)} style={{ padding:'6px 14px', borderRadius:5, border:'none', background:view===v.id?C.s1:'transparent', color:view===v.id?C.t1:C.t2, fontSize:12, fontWeight:view===v.id?600:400, cursor:'pointer' }}>{v.label}</button>
+          ))}
+        </div>
+        <button style={{ display:'flex', alignItems:'center', gap:6, background:accent, border:'none', borderRadius:6, padding:'8px 14px', color:'#fff', fontSize:12, fontWeight:600, cursor:'pointer' }}>
+          <I n="plus" s={13} c="#fff"/>Nouveau client
+        </button>
+      </div>
+      {view === 'pipeline' && (
+        <div style={{ display:'flex', gap:10, overflowX:'auto', paddingBottom:8 }}>
+          {pipeline.map((col,ci) => (
+            <div key={ci} style={{ minWidth:200, flex:1 }}>
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10 }}>
+                <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+                  <div style={{ width:7, height:7, borderRadius:'50%', background:col.color }}></div>
+                  <span style={{ fontSize:9, fontWeight:700, color:col.color, fontFamily:'JetBrains Mono', letterSpacing:'0.1em' }}>{col.stage}</span>
+                </div>
+                <span style={{ fontSize:9, color:C.t3, background:C.s2, borderRadius:8, padding:'2px 7px', border:`1px solid ${C.border}`, fontFamily:'JetBrains Mono' }}>{col.deals.length}</span>
+              </div>
+              <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                {col.deals.map((deal,di) => (
+                  <div key={di} style={{ background:C.s1, border:`1px solid ${C.border}`, borderLeft:`2px solid ${col.color}`, borderRadius:'0 7px 7px 0', padding:'12px 14px', cursor:'pointer', transition:'transform 0.12s' }}
+                    onMouseEnter={e=>e.currentTarget.style.transform='translateY(-2px)'}
+                    onMouseLeave={e=>e.currentTarget.style.transform='translateY(0)'}>
+                    <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:6 }}>
+                      <span style={{ fontSize:14 }}>{deal.icon}</span>
+                      <span style={{ fontSize:12, fontWeight:600, color:C.t1 }}>{deal.name}</span>
+                    </div>
+                    <div style={{ fontSize:10, color:C.t3 }}>{deal.contact}</div>
+                    <div style={{ fontSize:13, fontWeight:700, color:col.color, marginTop:6, fontFamily:'Montserrat', letterSpacing:'0.05em' }}>{deal.value} FCFA</div>
+                  </div>
+                ))}
+                <button style={{ border:`1px dashed ${C.border}`, background:'transparent', borderRadius:6, padding:'8px', fontSize:11, color:C.t3, cursor:'pointer', width:'100%', display:'flex', alignItems:'center', justifyContent:'center', gap:5 }}>
+                  <I n="plus" s={11} c={C.t3}/>Ajouter
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      {view === 'fiches' && (
+        <div style={{ background:C.s1, border:`1px solid ${C.border}`, borderRadius:8, overflow:'hidden' }}>
+          <table style={{ width:'100%', borderCollapse:'collapse' }}>
+            <thead><tr style={{ background:C.s2 }}>
+              {['Client','Type','Statut','Responsable','CA Total','Contact','Actions'].map(h=>(
+                <th key={h} style={{ textAlign:'left', fontSize:9, color:C.t3, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.08em', padding:'9px 20px', borderBottom:`1px solid ${C.border}`, fontFamily:'JetBrains Mono' }}>{h}</th>
+              ))}
+            </tr></thead>
+            <tbody>{clients.map((c,i)=>(
+              <tr key={i} style={{ borderBottom:`1px solid ${C.border}`, cursor:'pointer' }}
+                onMouseEnter={e=>e.currentTarget.style.background=C.s2}
+                onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+                <td style={{ padding:'12px 20px' }}>
+                  <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                    <div style={{ width:28, height:28, borderRadius:6, background:`${c.col}18`, border:`1px solid ${c.col}30`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, fontWeight:700, color:c.col }}>{c.nom[0]}</div>
+                    <span style={{ fontSize:13, fontWeight:600, color:C.t1 }}>{c.nom}</span>
+                  </div>
+                </td>
+                <td style={{ padding:'12px 20px', fontSize:11, color:C.t2 }}>{c.type}</td>
+                <td style={{ padding:'12px 20px' }}><Badge label={c.statut} color={statusColors2[c.statut]||C.t2} small/></td>
+                <td style={{ padding:'12px 20px', fontSize:11, color:C.t2 }}>{c.responsable}</td>
+                <td style={{ padding:'12px 20px', fontSize:12, fontWeight:700, color:C.t1 }}>{c.ca}</td>
+                <td style={{ padding:'12px 20px', fontSize:11, color:C.t2 }}>{c.contact}</td>
+                <td style={{ padding:'12px 20px' }}>
+                  <div style={{ display:'flex', gap:4 }}>
+                    {[{n:'eye'},{n:'edit'}].map(({n})=>(
+                      <button key={n} style={{ background:'none', border:'none', color:C.t3, padding:4, borderRadius:4, cursor:'pointer' }}
+                        onMouseEnter={e=>e.currentTarget.style.color=accent}
+                        onMouseLeave={e=>e.currentTarget.style.color=C.t3}><I n={n} s={13}/></button>
+                    ))}
+                  </div>
+                </td>
+              </tr>
+            ))}</tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ── PROJECTS KANBAN ───────────────────────────────────────────────────────
+const ProjectsModule = ({ accent }) => {
+  const columns = [
+    { id:'backlog', label:'BACKLOG', color:C.t2 },
+    { id:'todo', label:'À FAIRE', color:C.info },
+    { id:'inprogress', label:'EN COURS', color:accent },
+    { id:'review', label:'EN RÉVISION', color:C.warning },
+    { id:'validation', label:'VALIDATION', color:C.purple },
+    { id:'delivered', label:'LIVRÉ', color:C.success },
+    { id:'done', label:'CLÔTURÉ', color:C.t3 },
+  ];
+  const allCards = [
+    { col:'inprogress', title:'Identité visuelle — New Sylvia', client:'New Sylvia', deadline:'08 Mai', tag:'GRAPHISME', assignee:'🎨', urgency:'green' },
+    { col:'inprogress', title:'Posts Instagram Semaine 20', client:'KAAG Digital', deadline:'10 Mai', tag:'CM', assignee:'📱', urgency:'green' },
+    { col:'review', title:'Montage Reel Produit', client:'OTC Group', deadline:'07 Mai', tag:'VIDÉO', assignee:'🎬', urgency:'yellow' },
+    { col:'validation', title:'Maquettes Site Web v2', client:'New Sylvia', deadline:'06 Mai', tag:'DEV', assignee:'💻', urgency:'red' },
+    { col:'todo', title:'Brief shooting Mai', client:'KAAG Digital', deadline:'15 Mai', tag:'PHOTO', assignee:'📸', urgency:'green' },
+    { col:'backlog', title:'Audit SEO Q2', client:'BankPlus CI', deadline:'30 Mai', tag:'DEV', assignee:'💻', urgency:'green' },
+    { col:'delivered', title:'Logo OTC 2026', client:'OTC Group', deadline:'01 Mai', tag:'GRAPHISME', assignee:'🎨', urgency:'green' },
+  ];
+  const urgencyColors = { green:C.success, yellow:C.warning, red:C.danger };
+  const tagColors = { GRAPHISME:C.purple, CM:C.info, VIDÉO:C.danger, DEV:C.primary, PHOTO:C.warning, PHOTO:C.warning };
+  return (
+    <div style={{ flex:1, overflow:'hidden', padding:'16px 24px', display:'flex', flexDirection:'column', gap:14 }}>
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+        <div style={{ display:'flex', gap:8 }}>
+          {['Kanban','Timeline'].map(v=>(
+            <button key={v} style={{ padding:'6px 14px', borderRadius:6, border:`1px solid ${v==='Kanban'?accent:C.border}`, background:v==='Kanban'?`${accent}15`:'transparent', color:v==='Kanban'?accent:C.t2, fontSize:12, fontWeight:v==='Kanban'?600:400, cursor:'pointer' }}>{v}</button>
+          ))}
+        </div>
+        <button style={{ display:'flex', alignItems:'center', gap:6, background:accent, border:'none', borderRadius:6, padding:'8px 14px', color:'#fff', fontSize:12, fontWeight:600, cursor:'pointer' }}>
+          <I n="plus" s={13} c="#fff"/>Nouveau projet
+        </button>
+      </div>
+      <div style={{ display:'flex', gap:10, overflowX:'auto', flex:1, paddingBottom:8, alignItems:'flex-start' }}>
+        {columns.map(col => {
+          const cards = allCards.filter(c => c.col === col.id);
+          return (
+            <div key={col.id} style={{ minWidth:200, width:200, flexShrink:0 }}>
+              <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:10 }}>
+                <span style={{ fontSize:9, fontWeight:700, color:col.color, fontFamily:'JetBrains Mono', letterSpacing:'0.1em' }}>{col.label}</span>
+                <span style={{ fontSize:9, color:C.t3, background:C.s2, borderRadius:8, padding:'1px 6px', border:`1px solid ${C.border}`, fontFamily:'JetBrains Mono' }}>{cards.length}</span>
+              </div>
+              <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                {cards.map((card,i) => (
+                  <div key={i} style={{ background:C.s1, border:`1px solid ${C.border}`, borderRadius:8, padding:'12px 13px', cursor:'pointer', transition:'all 0.12s' }}
+                    onMouseEnter={e=>{ e.currentTarget.style.borderColor=col.color; e.currentTarget.style.transform='translateY(-2px)'; }}
+                    onMouseLeave={e=>{ e.currentTarget.style.borderColor=C.border; e.currentTarget.style.transform='translateY(0)'; }}>
+                    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:8 }}>
+                      <Badge label={card.tag} color={tagColors[card.tag]||C.t2} small/>
+                      <div style={{ width:6, height:6, borderRadius:'50%', background:urgencyColors[card.urgency], flexShrink:0 }}></div>
+                    </div>
+                    <div style={{ fontSize:12, fontWeight:500, color:C.t1, lineHeight:1.4, marginBottom:8 }}>{card.title}</div>
+                    <div style={{ fontSize:10, color:C.t3, marginBottom:8 }}>{card.client}</div>
+                    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                      <span style={{ fontSize:10, color:C.t3, fontFamily:'JetBrains Mono' }}>{card.deadline}</span>
+                      <span style={{ fontSize:14 }}>{card.assignee}</span>
+                    </div>
+                  </div>
+                ))}
+                {cards.length === 0 && (
+                  <div style={{ border:`1px dashed ${C.border}`, borderRadius:8, padding:'16px', textAlign:'center', color:C.t3, fontSize:11 }}>Vide</div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+// ── MESSAGERIE ────────────────────────────────────────────────────────────
+const MessagesModule = ({ accent }) => {
+  const [active, setActive] = useState(0);
+  const [input, setInput] = useState('');
+  const canaux = [
+    { name:'# général', last:'Réunion demain à 9h', time:'14:32', unread:2, type:'general' },
+    { name:'# projets-clients', last:'New Sylvia : maquette ok', time:'11:20', unread:1, type:'general' },
+    { name:'# finances', last:'Facture OTC à relancer', time:'10:05', unread:0, type:'general' },
+    { name:'# new-sylvia', last:'Brief validé ✓', time:'09:15', unread:3, type:'client', color:C.success },
+    { name:'# kaag-digital', last:'Posts S20 prêts', time:'Hier', unread:0, type:'client', color:C.info },
+  ];
+  const messages = [
+    { from:'Mamadou', role:'👑', text:'La maquette de New Sylvia est prête, on peut envoyer au client.', time:'09:10', mine:false },
+    { from:'Moi', role:'👑', text:'Parfait. Je valide et je rends visible dans le portail.', time:'09:12', mine:true },
+    { from:'Admin', role:'📋', text:'FAC-2026-008 a été créée et envoyée au client.', time:'11:30', mine:false },
+    { from:'Moi', role:'👑', text:'Super, merci. On attend le paiement d\'ici vendredi.', time:'11:32', mine:true },
+  ];
+  return (
+    <div style={{ flex:1, display:'flex', overflow:'hidden' }}>
+      {/* Canaux */}
+      <div style={{ width:260, borderRight:`1px solid ${C.border}`, display:'flex', flexDirection:'column', background:C.s1 }}>
+        <div style={{ padding:'12px 14px', borderBottom:`1px solid ${C.border}` }}>
+          <div style={{ display:'flex', alignItems:'center', gap:7, background:C.s2, border:`1px solid ${C.border}`, borderRadius:6, padding:'7px 10px' }}>
+            <I n="search" s={12} c={C.t3}/>
+            <input placeholder="Rechercher..." style={{ background:'none', border:'none', outline:'none', fontSize:11, color:C.t2, fontFamily:'DM Sans', flex:1 }}/>
+          </div>
+        </div>
+        <div style={{ padding:'8px 6px', borderBottom:`1px solid ${C.border}` }}>
+          <div style={{ fontSize:9, color:C.t3, fontFamily:'JetBrains Mono', letterSpacing:'0.1em', padding:'4px 8px', textTransform:'uppercase' }}>Canaux généraux</div>
+        </div>
+        <div style={{ flex:1, overflowY:'auto' }}>
+          {canaux.map((c,i) => (
+            <div key={i} onClick={()=>setActive(i)} style={{ display:'flex', alignItems:'center', gap:10, padding:'9px 14px', cursor:'pointer', background:active===i?`${accent}12`:undefined, borderLeft:active===i?`2px solid ${accent}`:'2px solid transparent' }}>
+              <div style={{ flex:1, minWidth:0 }}>
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                  <span style={{ fontSize:12, fontWeight:600, color:active===i?C.t1:C.t2 }}>{c.name}</span>
+                  <span style={{ fontSize:9, color:C.t3, fontFamily:'JetBrains Mono' }}>{c.time}</span>
+                </div>
+                <div style={{ fontSize:10, color:C.t3, whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis', marginTop:1 }}>{c.last}</div>
+              </div>
+              {c.unread>0 && <div style={{ width:16, height:16, borderRadius:'50%', background:accent, fontSize:8, fontWeight:700, color:'#fff', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'JetBrains Mono', flexShrink:0 }}>{c.unread}</div>}
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Chat */}
+      <div style={{ flex:1, display:'flex', flexDirection:'column' }}>
+        <div style={{ padding:'12px 20px', borderBottom:`1px solid ${C.border}`, display:'flex', alignItems:'center', gap:10 }}>
+          <span style={{ fontSize:14, fontWeight:600, color:C.t1 }}>{canaux[active].name}</span>
+          <span style={{ fontSize:10, color:C.t3 }}>· {canaux[active].type === 'client' ? 'Canal client' : 'Canal interne'}</span>
+          <div style={{ marginLeft:'auto', display:'flex', gap:6 }}>
+            <div style={{ width:6, height:6, borderRadius:'50%', background:C.success, marginTop:1 }}></div>
+            <span style={{ fontSize:10, color:C.success }}>En ligne</span>
+          </div>
+        </div>
+        <div style={{ flex:1, padding:'16px 20px', overflowY:'auto', display:'flex', flexDirection:'column', gap:12 }}>
+          {messages.map((m,i) => (
+            <div key={i} style={{ display:'flex', justifyContent:m.mine?'flex-end':'flex-start' }}>
+              <div style={{ maxWidth:'65%' }}>
+                {!m.mine && <div style={{ fontSize:10, color:accent, fontWeight:600, marginBottom:3 }}>{m.role} {m.from}</div>}
+                <div style={{ background:m.mine?accent:C.s2, border:m.mine?'none':`1px solid ${C.border}`, borderRadius:m.mine?'10px 10px 2px 10px':'10px 10px 10px 2px', padding:'9px 13px' }}>
+                  <div style={{ fontSize:12, color:m.mine?'#fff':C.t1, lineHeight:1.5 }}>{m.text}</div>
+                  <div style={{ fontSize:9, color:m.mine?'rgba(255,255,255,0.6)':C.t3, marginTop:4, textAlign:'right', fontFamily:'JetBrains Mono' }}>{m.time}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ padding:'12px 20px', borderTop:`1px solid ${C.border}`, display:'flex', gap:8 }}>
+          <div style={{ flex:1, display:'flex', alignItems:'center', gap:8, background:C.s2, border:`1px solid ${C.border}`, borderRadius:8, padding:'9px 13px' }}>
+            <button style={{ background:'none', border:'none', color:C.t3, cursor:'pointer' }}><I n="attach" s={14}/></button>
+            <input value={input} onChange={e=>setInput(e.target.value)} placeholder="Message dans # général..." style={{ flex:1, background:'none', border:'none', outline:'none', fontSize:12, color:C.t1, fontFamily:'DM Sans' }}/>
+          </div>
+          <button onClick={()=>setInput('')} style={{ background:accent, border:'none', borderRadius:8, padding:'9px 16px', cursor:'pointer', display:'flex', alignItems:'center', gap:6 }}>
+            <I n="send" s={14} c="#fff"/>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ── TEAM MODULE ───────────────────────────────────────────────────────────
+const TeamModule = ({ accent }) => {
+  const membres = [
+    { nom:'Israel Irie', role:'super_admin', poste:'Co-Fondateur', statut:'PRÉSENT', roleIcon:'👑' },
+    { nom:'Mamadou Lamine Fofana', role:'super_admin', poste:'Co-Fondateur', statut:'PRÉSENT', roleIcon:'👑' },
+    { nom:'Responsable Admin', role:'admin', poste:'Administration', statut:'PRÉSENT', roleIcon:'📋' },
+  ];
+  const prestataires = [
+    { nom:'Joel K.', specialite:'Graphiste', statut:'ACTIF', missions:3, note:4.8, roleIcon:'🎨' },
+    { nom:'Yann M.', specialite:'Monteur Vidéo', statut:'ACTIF', missions:5, note:4.6, roleIcon:'🎬' },
+    { nom:'Elkana D.', specialite:'Photographe', statut:'EN ATTENTE', missions:2, note:4.9, roleIcon:'📸' },
+    { nom:'Kouame A.', specialite:'Développeur', statut:'ACTIF', missions:4, note:4.7, roleIcon:'💻' },
+  ];
+  const [tab, setTab] = useState('membres');
+  return (
+    <div style={{ flex:1, overflowY:'auto', padding:24, display:'flex', flexDirection:'column', gap:16 }}>
+      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+        <div style={{ display:'flex', gap:1, background:C.s2, borderRadius:8, padding:3, border:`1px solid ${C.border}` }}>
+          {[{id:'membres',label:'Membres'},{id:'prestataires',label:'Prestataires'}].map(t=>(
+            <button key={t.id} onClick={()=>setTab(t.id)} style={{ padding:'6px 14px', borderRadius:5, border:'none', background:tab===t.id?C.s1:'transparent', color:tab===t.id?C.t1:C.t2, fontSize:12, fontWeight:tab===t.id?600:400, cursor:'pointer' }}>{t.label}</button>
+          ))}
+        </div>
+        <button style={{ display:'flex', alignItems:'center', gap:6, background:accent, border:'none', borderRadius:6, padding:'8px 14px', color:'#fff', fontSize:12, fontWeight:600, cursor:'pointer' }}>
+          <I n="plus" s={13} c="#fff"/>Nouveau compte
+        </button>
+      </div>
+      {tab === 'membres' && (
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))', gap:12 }}>
+          {membres.map((m,i) => (
+            <div key={i} style={{ background:C.s1, border:`1px solid ${C.border}`, borderRadius:10, padding:'20px', transition:'all 0.15s', cursor:'pointer' }}
+              onMouseEnter={e=>{e.currentTarget.style.borderColor=accent;e.currentTarget.style.transform='translateY(-2px)';}}
+              onMouseLeave={e=>{e.currentTarget.style.borderColor=C.border;e.currentTarget.style.transform='translateY(0)';}}>
+              <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:14 }}>
+                <div style={{ width:44, height:44, borderRadius:'50%', background:`${accent}20`, border:`2px solid ${accent}40`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:20 }}>{m.roleIcon}</div>
+                <div>
+                  <div style={{ fontSize:13, fontWeight:600, color:C.t1 }}>{m.nom}</div>
+                  <div style={{ fontSize:10, color:C.t2, marginTop:1 }}>{m.poste}</div>
+                </div>
+              </div>
+              <div style={{ display:'flex', gap:6 }}>
+                <Badge label={m.role.toUpperCase()} color={accent} small/>
+                <Badge label={m.statut} color={C.success} small/>
+              </div>
+            </div>
+          ))}
+          {/* Add placeholder */}
+          <div style={{ background:'transparent', border:`1px dashed ${C.border}`, borderRadius:10, padding:'20px', display:'flex', alignItems:'center', justifyContent:'center', cursor:'pointer', color:C.t3, fontSize:12, gap:8 }}>
+            <I n="plus" s={14} c={C.t3}/>Inviter un membre
+          </div>
+        </div>
+      )}
+      {tab === 'prestataires' && (
+        <div style={{ background:C.s1, border:`1px solid ${C.border}`, borderRadius:8, overflow:'hidden' }}>
+          <table style={{ width:'100%', borderCollapse:'collapse' }}>
+            <thead><tr style={{ background:C.s2 }}>
+              {['Prestataire','Spécialité','Statut','Missions','Note','Actions'].map(h=>(
+                <th key={h} style={{ textAlign:'left', fontSize:9, color:C.t3, fontWeight:600, textTransform:'uppercase', letterSpacing:'0.08em', padding:'9px 20px', borderBottom:`1px solid ${C.border}`, fontFamily:'JetBrains Mono' }}>{h}</th>
+              ))}
+            </tr></thead>
+            <tbody>{prestataires.map((p,i)=>(
+              <tr key={i} style={{ borderBottom:`1px solid ${C.border}`, cursor:'pointer' }}
+                onMouseEnter={e=>e.currentTarget.style.background=C.s2}
+                onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+                <td style={{ padding:'12px 20px' }}>
+                  <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                    <span style={{ fontSize:18 }}>{p.roleIcon}</span>
+                    <span style={{ fontSize:13, fontWeight:600, color:C.t1 }}>{p.nom}</span>
+                  </div>
+                </td>
+                <td style={{ padding:'12px 20px', fontSize:11, color:C.t2 }}>{p.specialite}</td>
+                <td style={{ padding:'12px 20px' }}><Badge label={p.statut} color={p.statut==='ACTIF'?C.success:C.warning} small/></td>
+                <td style={{ padding:'12px 20px', fontSize:12, color:C.t1, fontFamily:'JetBrains Mono' }}>{p.missions} missions</td>
+                <td style={{ padding:'12px 20px', fontSize:12, color:C.warning, fontWeight:600 }}>★ {p.note}</td>
+                <td style={{ padding:'12px 20px' }}>
+                  <div style={{ display:'flex', gap:4 }}>
+                    {[{n:'eye'},{n:'edit'}].map(({n})=>(
+                      <button key={n} style={{ background:'none', border:'none', color:C.t3, padding:4, borderRadius:4, cursor:'pointer' }}
+                        onMouseEnter={e=>e.currentTarget.style.color=accent}
+                        onMouseLeave={e=>e.currentTarget.style.color=C.t3}><I n={n} s={13}/></button>
+                    ))}
+                  </div>
+                </td>
+              </tr>
+            ))}</tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ── PLACEHOLDER ───────────────────────────────────────────────────────────
+const Placeholder = ({ title, icon, accent }) => (
+  <div style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', flexDirection:'column', gap:14 }}>
+    <div style={{ width:60, height:60, borderRadius:14, background:`${accent}15`, display:'flex', alignItems:'center', justifyContent:'center' }}><I n={icon||'dashboard'} s={26} c={accent}/></div>
+    <div style={{ fontFamily:'Montserrat', fontSize:24, color:C.t1, letterSpacing:'1px' }}>{title}</div>
+    <div style={{ fontSize:12, color:C.t2 }}>Module en cours de développement</div>
+    <div style={{ fontSize:10, color:C.t3, fontFamily:'JetBrains Mono' }}>Phase 2 — Semaines 5–8</div>
+  </div>
+);
+
+// ── SEARCH MODAL ──────────────────────────────────────────────────────────
+const SearchModal = ({ onClose, accent, onNav }) => {
+  const [q, setQ] = useState('');
+  const results = [
+    { type:'CLIENT', label:'New Sylvia Events', sub:'Actif · 360K FCFA', icon:'clients', nav:'clients' },
+    { type:'FACTURE', label:'FAC-2026-008 · Cabinet Diallo', sub:'En attente · 250 000 FCFA', icon:'invoice', nav:'finance' },
+    { type:'PROJET', label:'Maquettes Site Web v2', sub:'En validation · New Sylvia', icon:'projects', nav:'projects' },
+    { type:'PRESTATAIRE', label:'Joel K. — Graphiste', sub:'3 missions actives', icon:'team', nav:'team' },
+  ].filter(r => !q || r.label.toLowerCase().includes(q.toLowerCase()));
+  const typeColors = { CLIENT:C.success, FACTURE:accent, PROJET:C.info, PRESTATAIRE:C.purple };
+  useEffect(() => { const h = e => { if(e.key==='Escape') onClose(); }; window.addEventListener('keydown',h); return ()=>window.removeEventListener('keydown',h); },[]);
+  return (
+    <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.7)', display:'flex', alignItems:'flex-start', justifyContent:'center', paddingTop:80, zIndex:1000, backdropFilter:'blur(4px)' }} onClick={onClose}>
+      <div style={{ width:560, background:C.s1, border:`1px solid ${C.border}`, borderRadius:12, overflow:'hidden' }} onClick={e=>e.stopPropagation()}>
+        <div style={{ display:'flex', alignItems:'center', gap:10, padding:'14px 18px', borderBottom:`1px solid ${C.border}` }}>
+          <I n="search" s={16} c={accent}/>
+          <input autoFocus value={q} onChange={e=>setQ(e.target.value)} placeholder="Rechercher clients, factures, projets, prestataires…" style={{ flex:1, background:'none', border:'none', outline:'none', fontSize:14, color:C.t1, fontFamily:'DM Sans' }}/>
+          <span style={{ fontSize:10, color:C.t3, fontFamily:'JetBrains Mono', background:C.border, borderRadius:3, padding:'2px 5px' }}>ESC</span>
+        </div>
+        <div style={{ maxHeight:320, overflowY:'auto' }}>
+          {results.map((r,i) => (
+            <div key={i} onClick={()=>{onNav(r.nav);onClose();}} style={{ display:'flex', alignItems:'center', gap:12, padding:'11px 18px', cursor:'pointer', borderBottom:`1px solid ${C.border}` }}
+              onMouseEnter={e=>e.currentTarget.style.background=C.s2}
+              onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
+              <div style={{ width:28, height:28, borderRadius:6, background:`${typeColors[r.type]||C.t2}18`, display:'flex', alignItems:'center', justifyContent:'center' }}>
+                <I n={r.icon} s={13} c={typeColors[r.type]||C.t2}/>
+              </div>
+              <div style={{ flex:1 }}>
+                <div style={{ fontSize:12, fontWeight:600, color:C.t1 }}>{r.label}</div>
+                <div style={{ fontSize:10, color:C.t3 }}>{r.sub}</div>
+              </div>
+              <Badge label={r.type} color={typeColors[r.type]||C.t2} small/>
+            </div>
+          ))}
+          {results.length === 0 && <div style={{ padding:24, textAlign:'center', color:C.t3, fontSize:12 }}>Aucun résultat pour «{q}»</div>}
+        </div>
+        <div style={{ padding:'10px 18px', borderTop:`1px solid ${C.border}`, display:'flex', gap:12 }}>
+          {[{k:'↵',l:'Ouvrir'},{k:'↑↓',l:'Naviguer'},{k:'ESC',l:'Fermer'}].map(s=>(
+            <span key={s.k} style={{ fontSize:10, color:C.t3, display:'flex', alignItems:'center', gap:4 }}>
+              <span style={{ background:C.border, borderRadius:3, padding:'1px 5px', fontFamily:'JetBrains Mono' }}>{s.k}</span>{s.l}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ── LOGIN PAGE ────────────────────────────────────────────────────────────
+const LoginPage = ({ onLogin }) => {
+  const [email, setEmail] = useState('israel@yeshcom.com');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+  const [selectedRole, setSelectedRole] = useState('super_admin');
+  const demoRoles = [
+    { id:'super_admin', label:'Israel / Mamadou', icon:'👑', desc:'Accès total' },
+    { id:'admin', label:'Responsable Admin', icon:'📋', desc:'Finance, Clients, Projets' },
+    { id:'staff', label:'Staff — Graphiste', icon:'🎨', desc:'Missions uniquement' },
+    { id:'prestataire', label:'Prestataire — Joel', icon:'⚡', desc:'Cockpit mission' },
+    { id:'client', label:'Client — New Sylvia', icon:'🏢', desc:'Portail client' },
+  ];
+  const handle = e => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => { setLoading(false); onLogin(selectedRole); }, 1000);
+  };
+  return (
+    <div style={{ width:'100vw', height:'100vh', display:'flex', background:C.bg, overflow:'hidden' }}>
+      {/* Left */}
+      <div style={{ flex:1, display:'flex', flexDirection:'column', justifyContent:'center', padding:'60px 72px', position:'relative', background:`linear-gradient(135deg, #111 0%, #0A0A0A 100%)` }}>
+        <div style={{ position:'absolute', inset:0, background:`radial-gradient(ellipse at 15% 60%, ${C.primary}08 0%, transparent 55%)`, pointerEvents:'none' }}></div>
+        <div style={{ position:'absolute', top:40, left:40 }}>
+          <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+            <div style={{ width:36, height:36, borderRadius:8, background:C.primary, display:'flex', alignItems:'center', justifyContent:'center' }}>
+              <span style={{ fontFamily:'Montserrat', fontSize:22, color:'#fff' }}>Y</span>
+            </div>
+            <div>
+              <div style={{ fontFamily:'Montserrat', fontSize:16, color:C.t1, letterSpacing:'2px' }}>YESHCOM OS</div>
+              <div style={{ fontSize:9, color:C.primary, fontFamily:'JetBrains Mono', letterSpacing:'2px' }}>v2.0 · ABIDJAN</div>
+            </div>
+          </div>
+        </div>
+        <div style={{ position:'relative', zIndex:1, maxWidth:480 }}>
+          <div style={{ fontFamily:'Montserrat', fontSize:64, color:C.t1, letterSpacing:'1px', lineHeight:0.95, marginBottom:20 }}>
+            VOTRE AGENCE.<br/><span style={{ color:C.primary }}>UNE SEULE APP.</span>
+          </div>
+          <p style={{ fontSize:14, color:C.t2, lineHeight:1.7, marginBottom:32 }}>
+            YeshCom OS centralise projets, finances, clients, équipe et communications. Conçu pour Israel & Mamadou — opérationnel dès la connexion.
+          </p>
+          <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+            {['Zéro Trello · Zéro Slack · Zéro WhatsApp métier','Finance, CRM et Projets en temps réel','Portail client professionnel inclus'].map((f,i) => (
+              <div key={i} style={{ display:'flex', alignItems:'center', gap:10, fontSize:12, color:C.t2 }}>
+                <div style={{ width:14, height:14, borderRadius:'50%', background:`${C.primary}25`, border:`1px solid ${C.primary}50`, display:'flex', alignItems:'center', justifyContent:'center' }}>
+                  <I n="check" s={8} c={C.primary} strokeWidth={2.5}/>
+                </div>
+                {f}
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Decorative rings */}
+        <div style={{ position:'absolute', right:-80, top:'50%', transform:'translateY(-50%)', width:320, height:320, borderRadius:'50%', border:`1px solid ${C.primary}08`, pointerEvents:'none' }}></div>
+        <div style={{ position:'absolute', right:-40, top:'50%', transform:'translateY(-50%)', width:200, height:200, borderRadius:'50%', border:`1px solid ${C.primary}12`, pointerEvents:'none' }}></div>
+      </div>
+      {/* Right */}
+      <div style={{ width:460, display:'flex', alignItems:'center', justifyContent:'center', padding:48, background:C.s1, borderLeft:`1px solid ${C.border}` }}>
+        <div style={{ width:'100%', maxWidth:360 }}>
+          <div style={{ marginBottom:28 }}>
+            <div style={{ fontFamily:'Montserrat', fontSize:28, color:C.t1, letterSpacing:'1px', marginBottom:4 }}>CONNEXION</div>
+            <div style={{ fontSize:12, color:C.t2 }}>Accès sécurisé à YeshCom OS</div>
+          </div>
+          {/* Role selector (demo) */}
+          <div style={{ marginBottom:20 }}>
+            <div style={{ fontSize:9, color:C.t3, textTransform:'uppercase', letterSpacing:'0.1em', fontFamily:'JetBrains Mono', marginBottom:8 }}>Mode démo — Choisir un rôle</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:4 }}>
+              {demoRoles.map(r => (
+                <button key={r.id} onClick={()=>setSelectedRole(r.id)} style={{ display:'flex', alignItems:'center', gap:10, padding:'8px 12px', borderRadius:7, border:`1px solid ${selectedRole===r.id?C.primary:C.border}`, background:selectedRole===r.id?`${C.primary}12`:C.s2, cursor:'pointer', textAlign:'left', transition:'all 0.12s' }}>
+                  <span style={{ fontSize:16 }}>{r.icon}</span>
+                  <div style={{ flex:1 }}>
+                    <div style={{ fontSize:11, fontWeight:600, color:selectedRole===r.id?C.t1:C.t2 }}>{r.label}</div>
+                    <div style={{ fontSize:9, color:C.t3 }}>{r.desc}</div>
+                  </div>
+                  {selectedRole===r.id && <div style={{ width:16, height:16, borderRadius:'50%', background:C.primary, display:'flex', alignItems:'center', justifyContent:'center' }}><I n="check" s={9} c="#fff" strokeWidth={2.5}/></div>}
+                </button>
+              ))}
+            </div>
+          </div>
+          <form onSubmit={handle} style={{ display:'flex', flexDirection:'column', gap:12 }}>
+            <div>
+              <label style={{ fontSize:9, fontWeight:600, color:C.t3, textTransform:'uppercase', letterSpacing:'0.1em', display:'block', marginBottom:6, fontFamily:'JetBrains Mono' }}>Email</label>
+              <div style={{ position:'relative' }}>
+                <div style={{ position:'absolute', left:12, top:'50%', transform:'translateY(-50%)', color:C.t3 }}><I n="mail" s={14}/></div>
+                <input value={email} onChange={e=>setEmail(e.target.value)} style={{ width:'100%', background:C.s2, border:`1px solid ${C.border}`, borderRadius:7, padding:'10px 12px 10px 38px', color:C.t1, fontSize:13, fontFamily:'DM Sans', outline:'none' }}/>
+              </div>
+            </div>
+            <div>
+              <label style={{ fontSize:9, fontWeight:600, color:C.t3, textTransform:'uppercase', letterSpacing:'0.1em', display:'block', marginBottom:6, fontFamily:'JetBrains Mono' }}>Mot de passe</label>
+              <div style={{ position:'relative' }}>
+                <div style={{ position:'absolute', left:12, top:'50%', transform:'translateY(-50%)', color:C.t3 }}><I n="lock" s={14}/></div>
+                <input type={showPass?'text':'password'} value={password} onChange={e=>setPassword(e.target.value)} placeholder="••••••••" style={{ width:'100%', background:C.s2, border:`1px solid ${C.border}`, borderRadius:7, padding:'10px 38px 10px 38px', color:C.t1, fontSize:13, fontFamily:'DM Sans', outline:'none' }}/>
+                <button type="button" onClick={()=>setShowPass(!showPass)} style={{ position:'absolute', right:10, top:'50%', transform:'translateY(-50%)', background:'none', border:'none', color:C.t3, cursor:'pointer' }}><I n="eye" s={14}/></button>
+              </div>
+            </div>
+            <div style={{ display:'flex', justifyContent:'flex-end' }}>
+              <a href="#" style={{ fontSize:11, color:C.primary, textDecoration:'none' }}>Mot de passe oublié ?</a>
+            </div>
+            <button type="submit" style={{ background:loading?`${C.primary}88`:C.primary, color:'#fff', border:'none', borderRadius:8, padding:'12px', fontSize:13, fontWeight:700, fontFamily:'Montserrat', letterSpacing:'1px', cursor:loading?'not-allowed':'pointer', display:'flex', alignItems:'center', justifyContent:'center', gap:8, marginTop:4 }}>
+              {loading ? <><span style={{ width:14, height:14, border:'2px solid rgba(255,255,255,0.3)', borderTop:'2px solid white', borderRadius:'50%', animation:'spin 0.7s linear infinite', display:'inline-block' }}></span>CONNEXION…</> : 'SE CONNECTER →'}
+            </button>
+          </form>
+          <div style={{ marginTop:16, textAlign:'center', fontSize:10, color:C.t3, fontFamily:'JetBrains Mono' }}>
+            © 2026 YESHCOM · Abidjan · Confidentiel
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ── MODULE TITLES ─────────────────────────────────────────────────────────
+const MODULE_META = {
+  dashboard: { title:'Dashboard', icon:'dashboard' },
+  finance: { title:'Finance', icon:'finance' },
+  clients: { title:'Clients & CRM', icon:'clients' },
+  projects: { title:'Projets', icon:'projects' },
+  team: { title:'Équipe', icon:'team' },
+  stock: { title:'Stock & Locations', icon:'stock' },
+  services: { title:'Services', icon:'services' },
+  drive: { title:'Drive YeshCom', icon:'drive' },
+  messages: { title:'Messagerie', icon:'messages' },
+  templates: { title:'Templates', icon:'templates' },
+  journal: { title:'Journal de bord', icon:'journal' },
+  notifications: { title:'Notifications', icon:'notifications' },
+  settings: { title:'Paramètres', icon:'settings' },
+  profile: { title:'Mon profil', icon:'user' },
+};
+
+// ── APP ───────────────────────────────────────────────────────────────────
+const App = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [role, setRole] = useState('super_admin');
+  const [active, setActive] = useState('dashboard');
+  const [collapsed, setCollapsed] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const accent = tweaks.accentColor;
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--primary', accent);
+    const h = e => { if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();setShowSearch(s=>!s);} };
+    window.addEventListener('keydown', h);
+    return () => window.removeEventListener('keydown', h);
+  }, [accent]);
+
+  const handleLogin = (r) => { setRole(r); setLoggedIn(true); setActive('dashboard'); };
+  const handleLogout = () => setLoggedIn(false);
+
+  const renderModule = () => {
+    switch(active) {
+      case 'dashboard': {
+        if (role === 'super_admin' || role === 'admin') return <DashboardFounder accent={accent}/>;
+        if (role === 'client') return <Placeholder title="Avancement projet" icon="chart" accent={accent}/>;
+        return <Placeholder title="Mes missions" icon="projects" accent={accent}/>;
+      }
+      case 'finance': return <FinanceModule accent={accent}/>;
+      case 'clients': return <ClientsModule accent={accent}/>;
+      case 'projects': return <ProjectsModule accent={accent}/>;
+      case 'team': return <TeamModule accent={accent}/>;
+      case 'messages': return <MessagesModule accent={accent}/>;
+      default: return <Placeholder title={MODULE_META[active]?.title || active} icon={MODULE_META[active]?.icon || 'dashboard'} accent={accent}/>;
+    }
+  };
+
+  if (!loggedIn) return <LoginPage onLogin={handleLogin}/>;
+
+  return (
+    <>
+      <div style={{ width:'100vw', height:'100vh', display:'flex', overflow:'hidden' }}>
+        <Sidebar active={active} onNav={setActive} role={role} collapsed={collapsed} accent={accent} onLogout={handleLogout}/>
+        <div style={{ flex:1, display:'flex', flexDirection:'column', overflow:'hidden', background:C.bg }}>
+          <Topbar title={MODULE_META[active]?.title || active} onToggle={()=>setCollapsed(c=>!c)} accent={accent} onSearch={()=>setShowSearch(true)}/>
+          <div style={{ flex:1, overflow:'hidden', display:'flex', flexDirection:'column' }}>
+            {renderModule()}
+          </div>
+        </div>
+      </div>
+      {showSearch && <SearchModal onClose={()=>setShowSearch(false)} accent={accent} onNav={setActive}/>}
+      <TweaksPanel>
+        <TweakSection title="Apparence">
+          <TweakColor label="Couleur accent" value={accent} onChange={v=>setTweak('accentColor',v)}/>
+        </TweakSection>
+        <TweakSection title="Démonstration">
+          <TweakSelect label="Rôle actif" value={role} options={[
+            {label:'👑 Super Admin (Israel/Mamadou)',value:'super_admin'},
+            {label:'📋 Administrateur',value:'admin'},
+            {label:'🎨 Staff',value:'staff'},
+            {label:'⚡ Prestataire',value:'prestataire'},
+            {label:'🏢 Client',value:'client'},
+          ]} onChange={v=>setRole(v)}/>
+          <TweakSelect label="Module" value={active} options={Object.entries(MODULE_META).map(([k,v])=>({label:v.title,value:k}))} onChange={v=>setActive(v)}/>
+        </TweakSection>
+        <TweakSection title="Sidebar">
+          <TweakToggle label="Sidebar réduite" value={collapsed} onChange={v=>setCollapsed(v)}/>
+        </TweakSection>
+      </TweaksPanel>
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
