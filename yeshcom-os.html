@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YESHCOM OS — Enterprise Management</title>
+<template id="__bundler_thumbnail" data-bg-color="#0f0f0f">
+  <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+    <rect width="72" height="280" fill="#141414"/>
+    <rect x="16" y="16" width="40" height="40" rx="8" fill="#FF6600"/>
+    <text x="36" y="43" text-anchor="middle" font-size="22" font-weight="900" fill="white" font-family="Arial">Y</text>
+    <rect x="16" y="72" width="40" height="8" rx="3" fill="#FF6600" opacity="0.9"/>
+    <rect x="16" y="90" width="40" height="8" rx="3" fill="#333"/>
+    <rect x="16" y="108" width="40" height="8" rx="3" fill="#333"/>
+    <rect x="16" y="126" width="40" height="8" rx="3" fill="#333"/>
+    <rect x="72" width="328" height="52" fill="#1a1a1a"/>
+    <rect x="88" y="18" width="100" height="16" rx="4" fill="#252525"/>
+    <circle cx="368" cy="26" r="10" fill="#FF6600" opacity="0.7"/>
+    <rect x="88" y="68" width="72" height="52" rx="8" fill="#1a1a1a"/>
+    <rect x="170" y="68" width="72" height="52" rx="8" fill="#1a1a1a"/>
+    <rect x="252" y="68" width="72" height="52" rx="8" fill="#1a1a1a"/>
+    <rect x="334" y="68" width="54" height="52" rx="8" fill="#1a1a1a"/>
+    <rect x="88" y="68" width="4" height="52" rx="2" fill="#FF6600"/>
+    <rect x="88" y="132" width="180" height="100" rx="8" fill="#1a1a1a"/>
+    <rect x="278" y="132" width="110" height="100" rx="8" fill="#1a1a1a"/>
+    <rect x="104" y="196" width="16" height="28" rx="2" fill="#FF6600" opacity="0.4"/>
+    <rect x="126" y="184" width="16" height="40" rx="2" fill="#FF6600" opacity="0.6"/>
+    <rect x="148" y="176" width="16" height="48" rx="2" fill="#FF6600" opacity="0.8"/>
+    <rect x="170" y="168" width="16" height="56" rx="2" fill="#FF6600"/>
+    <rect x="192" y="178" width="16" height="46" rx="2" fill="#FF6600" opacity="0.7"/>
+    <rect x="214" y="160" width="16" height="64" rx="2" fill="#FF6600"/>
+    <rect x="292" y="148" width="80" height="8" rx="2" fill="#252525"/>
+    <rect x="292" y="162" width="60" height="8" rx="2" fill="#252525"/>
+    <rect x="292" y="176" width="70" height="8" rx="2" fill="#252525"/>
+    <rect x="292" y="190" width="50" height="8" rx="2" fill="#252525"/>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; font-family: 'Inter', sans-serif; background: #0f0f0f; color: #f0f0f0; overflow: hidden; }
+  :root {
+    --accent: #FF6600;
+    --accent-light: #FF8833;
+    --accent-dim: rgba(255,102,0,0.15);
+    --sidebar-bg: #141414;
+    --sidebar-border: #2a2a2a;
+    --topbar-bg: #1a1a1a;
+    --content-bg: #0f0f0f;
+    --card-bg: #1a1a1a;
+    --card-border: #252525;
+    --text-primary: #f0f0f0;
+    --text-secondary: #888;
+    --text-muted: #555;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #3b82f6;
+  }
+  .light-theme {
+    --sidebar-bg: #1a1a1a;
+    --sidebar-border: #2a2a2a;
+    --topbar-bg: #ffffff;
+    --content-bg: #f4f5f7;
+    --card-bg: #ffffff;
+    --card-border: #e5e7eb;
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+    --text-muted: #9ca3af;
+  }
+  #root { height: 100%; }
+  ::-webkit-scrollbar { width: 4px; height: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+// ─── ICONS (SVG inline) ────────────────────────────────────────────────
+const Icon = ({ name, size = 18, color = "currentColor" }) => {
+  const icons = {
+    dashboard: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>,
+    projects: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>,
+    invoice: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>,
+    crm: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+    hr: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+    accounting: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>,
+    inventory: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>,
+    analytics: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
+    messages: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>,
+    settings: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/><path d="M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>,
+    bell: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>,
+    search: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
+    plus: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+    trending: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>,
+    arrow_up: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>,
+    arrow_down: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>,
+    check: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>,
+    eye: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>,
+    lock: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>,
+    mail: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>,
+    logout: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>,
+    menu: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>,
+    edit: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
+    send: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
+    attach: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>,
+    filter: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
+    download: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>,
+    calendar: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+    star: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>,
+    close: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+    chart: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>,
+  };
+  return icons[name] || <span style={{fontSize: size}}>●</span>;
+};
+
+// ─── MINI CHART COMPONENTS ──────────────────────────────────────────────
+const SparkLine = ({ data, color = "#FF6600", width = 80, height = 32 }) => {
+  const max = Math.max(...data), min = Math.min(...data);
+  const range = max - min || 1;
+  const pts = data.map((v, i) => {
+    const x = (i / (data.length - 1)) * width;
+    const y = height - ((v - min) / range) * (height - 4) - 2;
+    return `${x},${y}`;
+  }).join(' ');
+  return (
+    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
+      <polyline points={pts} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+};
+
+const BarChart = ({ data, colors }) => {
+  const max = Math.max(...data.map(d => d.value));
+  return (
+    <div style={{ display: 'flex', alignItems: 'flex-end', gap: 6, height: 80, padding: '8px 0' }}>
+      {data.map((d, i) => (
+        <div key={i} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 4 }}>
+          <div style={{ width: '100%', background: colors ? colors[i % colors.length] : 'var(--accent)', borderRadius: '3px 3px 0 0', height: `${(d.value / max) * 64}px`, transition: 'height 0.5s ease', opacity: 0.85 }}></div>
+          <span style={{ fontSize: 9, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{d.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const DonutChart = ({ value, size = 72, color = "#FF6600" }) => {
+  const r = 28, circ = 2 * Math.PI * r;
+  const dash = (value / 100) * circ;
+  return (
+    <svg width={size} height={size} viewBox="0 0 64 64">
+      <circle cx="32" cy="32" r={r} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="8"/>
+      <circle cx="32" cy="32" r={r} fill="none" stroke={color} strokeWidth="8"
+        strokeDasharray={`${dash} ${circ - dash}`} strokeLinecap="round"
+        transform="rotate(-90 32 32)" style={{ transition: 'stroke-dasharray 0.8s ease' }}/>
+      <text x="32" y="37" textAnchor="middle" fontSize="13" fontWeight="700" fill="var(--text-primary)" fontFamily="DM Sans">{value}%</text>
+    </svg>
+  );
+};
+
+// ─── TWEAK DEFAULTS ──────────────────────────────────────────────────────
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "accentColor": "#FF6600",
+  "theme": "dark",
+  "sidebarWidth": "expanded",
+  "variation": "v1"
+}/*EDITMODE-END*/;
+
+// ─── LOGIN PAGE ──────────────────────────────────────────────────────────
+const LoginPage = ({ onLogin }) => {
+  const [email, setEmail] = useState('admin@yeshcom.com');
+  const [password, setPassword] = useState('••••••••');
+  const [loading, setLoading] = useState(false);
+  const [showPass, setShowPass] = useState(false);
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => { setLoading(false); onLogin(); }, 1200);
+  };
+  return (
+    <div style={{ width: '100vw', height: '100vh', display: 'flex', background: '#0a0a0a', position: 'relative', overflow: 'hidden' }}>
+      {/* Left decorative panel */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '60px 80px', position: 'relative', background: 'linear-gradient(135deg, #141414 0%, #0f0f0f 100%)' }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundImage: 'radial-gradient(ellipse at 20% 50%, rgba(255,102,0,0.08) 0%, transparent 60%)', pointerEvents: 'none' }}></div>
+        <div style={{ position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 60 }}>
+            <div style={{ width: 44, height: 44, borderRadius: 10, background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 22, fontWeight: 900, color: '#fff', fontFamily: 'DM Sans' }}>Y</div>
+            <span style={{ fontSize: 22, fontWeight: 700, fontFamily: 'DM Sans', color: '#fff', letterSpacing: '-0.5px' }}>YESHCOM <span style={{ color: 'var(--accent)' }}>OS</span></span>
+          </div>
+          <h1 style={{ fontSize: 52, fontWeight: 700, fontFamily: 'DM Sans', lineHeight: 1.1, marginBottom: 20, letterSpacing: '-2px', color: '#fff' }}>
+            Gérez votre<br />
+            <span style={{ color: 'var(--accent)' }}>entreprise</span><br />
+            intelligemment.
+          </h1>
+          <p style={{ color: '#666', fontSize: 16, lineHeight: 1.7, maxWidth: 380 }}>
+            Plateforme ERP complète pour les entreprises technologiques — projets, facturation, CRM, RH et bien plus.
+          </p>
+          {/* Feature pills */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 40 }}>
+            {['Dashboard temps réel','Facturation automatique','Gestion RH','CRM intégré'].map(f => (
+              <div key={f} style={{ display: 'flex', alignItems: 'center', gap: 6, background: 'rgba(255,102,0,0.1)', border: '1px solid rgba(255,102,0,0.2)', borderRadius: 20, padding: '6px 14px', fontSize: 12, color: '#FF8833' }}>
+                <div style={{ width: 5, height: 5, borderRadius: '50%', background: 'var(--accent)' }}></div>
+                {f}
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* Abstract geometric decoration */}
+        <div style={{ position: 'absolute', right: -60, top: '50%', transform: 'translateY(-50%)', width: 300, height: 300, borderRadius: '50%', border: '1px solid rgba(255,102,0,0.1)', pointerEvents: 'none' }}></div>
+        <div style={{ position: 'absolute', right: -30, top: '50%', transform: 'translateY(-50%)', width: 200, height: 200, borderRadius: '50%', border: '1px solid rgba(255,102,0,0.15)', pointerEvents: 'none' }}></div>
+      </div>
+      {/* Right login panel */}
+      <div style={{ width: 480, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 48, background: '#111', borderLeft: '1px solid #1e1e1e' }}>
+        <div style={{ width: '100%', maxWidth: 380 }}>
+          <div style={{ marginBottom: 40 }}>
+            <h2 style={{ fontSize: 28, fontWeight: 700, fontFamily: 'DM Sans', color: '#fff', letterSpacing: '-0.5px', marginBottom: 8 }}>Connexion</h2>
+            <p style={{ color: '#666', fontSize: 14 }}>Bienvenue sur YESHCOM OS</p>
+          </div>
+          <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
+            <div>
+              <label style={{ fontSize: 12, fontWeight: 500, color: '#888', textTransform: 'uppercase', letterSpacing: '0.8px', display: 'block', marginBottom: 8 }}>Email / Identifiant</label>
+              <div style={{ position: 'relative' }}>
+                <div style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#555' }}><Icon name="mail" size={15}/></div>
+                <input value={email} onChange={e => setEmail(e.target.value)} style={{ width: '100%', background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 10, padding: '12px 14px 12px 42px', color: '#f0f0f0', fontSize: 14, fontFamily: 'Inter', outline: 'none' }} />
+              </div>
+            </div>
+            <div>
+              <label style={{ fontSize: 12, fontWeight: 500, color: '#888', textTransform: 'uppercase', letterSpacing: '0.8px', display: 'block', marginBottom: 8 }}>Mot de passe</label>
+              <div style={{ position: 'relative' }}>
+                <div style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: '#555' }}><Icon name="lock" size={15}/></div>
+                <input type={showPass ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} style={{ width: '100%', background: '#1a1a1a', border: '1px solid #2a2a2a', borderRadius: 10, padding: '12px 42px 12px 42px', color: '#f0f0f0', fontSize: 14, fontFamily: 'Inter', outline: 'none' }} />
+                <button type="button" onClick={() => setShowPass(!showPass)} style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#555', cursor: 'pointer' }}><Icon name="eye" size={15}/></button>
+              </div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontSize: 13, color: '#888' }}>
+                <input type="checkbox" defaultChecked style={{ accentColor: 'var(--accent)' }} />
+                Se souvenir de moi
+              </label>
+              <a href="#" style={{ fontSize: 13, color: 'var(--accent)', textDecoration: 'none' }}>Mot de passe oublié ?</a>
+            </div>
+            <button type="submit" style={{ marginTop: 8, background: loading ? '#cc5200' : 'var(--accent)', color: '#fff', border: 'none', borderRadius: 10, padding: '14px 24px', fontSize: 15, fontWeight: 600, fontFamily: 'DM Sans', cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, transition: 'all 0.2s' }}>
+              {loading ? <><span style={{ width: 16, height: 16, border: '2px solid rgba(255,255,255,0.3)', borderTop: '2px solid white', borderRadius: '50%', animation: 'spin 0.8s linear infinite', display: 'inline-block' }}></span> Connexion...</> : <><Icon name="arrow_up" size={16} color="#fff"/>Se connecter</>}
+            </button>
+          </form>
+          <p style={{ marginTop: 24, textAlign: 'center', fontSize: 12, color: '#444' }}>
+            © 2026 YESHCOM — Système de gestion d'entreprise
+          </p>
+        </div>
+      </div>
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  );
+};
+
+// ─── SIDEBAR ──────────────────────────────────────────────────────────────
+const navItems = [
+  { id: 'dashboard', label: 'Dashboard', labelEn: 'Dashboard', icon: 'dashboard' },
+  { id: 'projects', label: 'Projets', labelEn: 'Projects', icon: 'projects' },
+  { id: 'invoice', label: 'Facturation', labelEn: 'Invoicing', icon: 'invoice' },
+  { id: 'crm', label: 'CRM / Ventes', labelEn: 'CRM / Sales', icon: 'crm' },
+  { id: 'hr', label: 'Ressources Humaines', labelEn: 'Human Resources', icon: 'hr' },
+  { id: 'accounting', label: 'Comptabilité', labelEn: 'Accounting', icon: 'accounting' },
+  { id: 'inventory', label: 'Inventaire', labelEn: 'Inventory', icon: 'inventory' },
+  { id: 'analytics', label: 'Analytics', labelEn: 'Analytics', icon: 'analytics' },
+  { id: 'messages', label: 'Messagerie', labelEn: 'Messages', icon: 'messages' },
+];
+
+const Sidebar = ({ active, onNavigate, collapsed, accentColor }) => {
+  return (
+    <div style={{ width: collapsed ? 64 : 240, background: 'var(--sidebar-bg)', borderRight: '1px solid var(--sidebar-border)', display: 'flex', flexDirection: 'column', transition: 'width 0.25s ease', overflow: 'hidden', flexShrink: 0, height: '100%' }}>
+      {/* Logo */}
+      <div style={{ padding: collapsed ? '20px 0' : '20px 20px', display: 'flex', alignItems: 'center', gap: 12, borderBottom: '1px solid var(--sidebar-border)', height: 64, justifyContent: collapsed ? 'center' : 'flex-start' }}>
+        <div style={{ width: 34, height: 34, borderRadius: 8, background: accentColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 18, fontWeight: 900, color: '#fff', fontFamily: 'DM Sans', flexShrink: 0 }}>Y</div>
+        {!collapsed && <div>
+          <div style={{ fontSize: 15, fontWeight: 700, fontFamily: 'DM Sans', color: '#fff', letterSpacing: '-0.3px', lineHeight: 1.1 }}>YESHCOM</div>
+          <div style={{ fontSize: 10, color: accentColor, fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase' }}>OS</div>
+        </div>}
+      </div>
+      {/* Nav */}
+      <nav style={{ flex: 1, padding: '12px 8px', display: 'flex', flexDirection: 'column', gap: 2, overflowY: 'auto' }}>
+        {navItems.map(item => {
+          const isActive = active === item.id;
+          return (
+            <button key={item.id} onClick={() => onNavigate(item.id)}
+              title={collapsed ? item.label : ''}
+              style={{ display: 'flex', alignItems: 'center', gap: 12, padding: collapsed ? '10px 0' : '10px 12px', borderRadius: 8, border: 'none', background: isActive ? `${accentColor}22` : 'transparent', color: isActive ? accentColor : 'var(--text-secondary)', cursor: 'pointer', textAlign: 'left', width: '100%', transition: 'all 0.15s', justifyContent: collapsed ? 'center' : 'flex-start', position: 'relative' }}>
+              <span style={{ flexShrink: 0 }}><Icon name={item.icon} size={18} color={isActive ? accentColor : 'var(--text-secondary)'}/></span>
+              {!collapsed && <span style={{ fontSize: 13, fontWeight: isActive ? 600 : 400, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.label}</span>}
+              {!collapsed && isActive && <div style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)', width: 3, height: 20, background: accentColor, borderRadius: '3px 0 0 3px' }}></div>}
+            </button>
+          );
+        })}
+      </nav>
+      {/* Bottom user */}
+      <div style={{ padding: '12px 8px', borderTop: '1px solid var(--sidebar-border)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: collapsed ? '8px 0' : '8px 12px', justifyContent: collapsed ? 'center' : 'flex-start' }}>
+          <div style={{ width: 32, height: 32, borderRadius: '50%', background: `${accentColor}33`, border: `2px solid ${accentColor}`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: accentColor, flexShrink: 0 }}>A</div>
+          {!collapsed && <div style={{ overflow: 'hidden' }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>Admin</div>
+            <div style={{ fontSize: 10, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>Administrateur</div>
+          </div>}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── TOPBAR ───────────────────────────────────────────────────────────────
+const Topbar = ({ title, onToggle, accentColor, onLogout }) => {
+  const [notifs, setNotifs] = useState(4);
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
+  return (
+    <div style={{ height: 64, background: 'var(--topbar-bg)', borderBottom: '1px solid var(--card-border)', display: 'flex', alignItems: 'center', padding: '0 24px', gap: 16, flexShrink: 0 }}>
+      <button onClick={onToggle} style={{ background: 'none', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', padding: 6, borderRadius: 6 }}><Icon name="menu" size={20}/></button>
+      <div style={{ flex: 1 }}>
+        <h1 style={{ fontSize: 16, fontWeight: 700, fontFamily: 'DM Sans', color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>{title}</h1>
+        <p style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'capitalize' }}>{dateStr}</p>
+      </div>
+      {/* Search */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 8, padding: '7px 14px', width: 220 }}>
+        <Icon name="search" size={14} color="var(--text-muted)"/>
+        <input placeholder="Rechercher..." style={{ background: 'none', border: 'none', outline: 'none', fontSize: 13, color: 'var(--text-secondary)', fontFamily: 'Inter', width: '100%' }}/>
+      </div>
+      {/* Notifs */}
+      <button onClick={() => setNotifs(0)} style={{ position: 'relative', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', padding: 8, borderRadius: 8 }}>
+        <Icon name="bell" size={20}/>
+        {notifs > 0 && <div style={{ position: 'absolute', top: 4, right: 4, width: 16, height: 16, background: accentColor, borderRadius: '50%', fontSize: 9, fontWeight: 700, color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{notifs}</div>}
+      </button>
+      <button onClick={onLogout} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', padding: 8, borderRadius: 8 }}><Icon name="logout" size={18}/></button>
+    </div>
+  );
+};
+
+// ─── STAT CARD ────────────────────────────────────────────────────────────
+const StatCard = ({ label, value, change, trend, icon, color, sparkData }) => (
+  <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 12, padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 12 }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+      <div>
+        <div style={{ fontSize: 11, color: 'var(--text-muted)', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: 6 }}>{label}</div>
+        <div style={{ fontSize: 28, fontWeight: 700, fontFamily: 'DM Sans', color: 'var(--text-primary)', letterSpacing: '-0.5px' }}>{value}</div>
+      </div>
+      <div style={{ width: 40, height: 40, borderRadius: 10, background: `${color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Icon name={icon} size={18} color={color}/>
+      </div>
+    </div>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 3, color: trend === 'up' ? '#22c55e' : '#ef4444', fontSize: 12, fontWeight: 600 }}>
+          <Icon name={trend === 'up' ? 'arrow_up' : 'arrow_down'} size={12} color={trend === 'up' ? '#22c55e' : '#ef4444'}/>
+          {change}
+        </div>
+        <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>vs mois dernier</span>
+      </div>
+      {sparkData && <SparkLine data={sparkData} color={color} width={60} height={28}/>}
+    </div>
+  </div>
+);
+
+// ─── DASHBOARD MODULE ─────────────────────────────────────────────────────
+const DashboardModule = ({ accentColor }) => {
+  const stats = [
+    { label: 'Chiffre d\'affaires', value: '847 200 DZD', change: '+12.4%', trend: 'up', icon: 'accounting', color: accentColor, sparkData: [40,55,45,60,52,70,65,80,72,85] },
+    { label: 'Projets actifs', value: '24', change: '+3', trend: 'up', icon: 'projects', color: '#3b82f6', sparkData: [18,20,21,19,22,21,23,22,24,24] },
+    { label: 'Factures en attente', value: '18', change: '-2', trend: 'down', icon: 'invoice', color: '#f59e0b', sparkData: [22,24,21,20,22,19,20,18,20,18] },
+    { label: 'Employés actifs', value: '63', change: '+5', trend: 'up', icon: 'hr', color: '#22c55e', sparkData: [55,56,57,58,58,59,60,61,62,63] },
+  ];
+  const recentProjects = [
+    { name: 'Refonte Site Web Client A', progress: 78, status: 'En cours', due: '15 Mai' },
+    { name: 'Déploiement Infrastructure Cloud', progress: 45, status: 'En cours', due: '30 Mai' },
+    { name: 'Application Mobile B2B', progress: 92, status: 'Finalisation', due: '08 Mai' },
+    { name: 'Migration ERP Partenaire', progress: 20, status: 'Démarrage', due: '01 Juin' },
+  ];
+  const recentInvoices = [
+    { ref: 'FAC-2025-0312', client: 'TechCorp SARL', amount: '120 000 DZD', status: 'Payée' },
+    { ref: 'FAC-2025-0311', client: 'Media Group', amount: '85 500 DZD', status: 'En attente' },
+    { ref: 'FAC-2025-0310', client: 'StartupXYZ', amount: '42 000 DZD', status: 'En retard' },
+    { ref: 'FAC-2025-0309', client: 'SONATRACH', amount: '310 000 DZD', status: 'Payée' },
+  ];
+  const revenueData = [
+    { label: 'Jan', value: 420 }, { label: 'Fév', value: 580 }, { label: 'Mar', value: 510 },
+    { label: 'Avr', value: 670 }, { label: 'Mai', value: 720 }, { label: 'Juin', value: 847 },
+  ];
+  const statusColors = { 'Payée': '#22c55e', 'En attente': '#f59e0b', 'En retard': '#ef4444' };
+  const projStatusColors = { 'En cours': '#3b82f6', 'Finalisation': '#22c55e', 'Démarrage': accentColor };
+  return (
+    <div style={{ padding: '24px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: 24 }}>
+      {/* Stats row */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+        {stats.map((s, i) => <StatCard key={i} {...s} />)}
+      </div>
+      {/* Row 2: Revenue + Projects */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
+        {/* Revenue chart */}
+        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 12, padding: '20px 22px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'DM Sans' }}>Revenus mensuels</div>
+              <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>6 derniers mois • en k DZD</div>
+            </div>
+            <div style={{ fontSize: 12, color: '#22c55e', fontWeight: 600, display: 'flex', alignItems: 'center', gap: 4 }}>
+              <Icon name="trending" size={14} color="#22c55e"/>+18.2%
+            </div>
+          </div>
+          <BarChart data={revenueData} colors={[`${accentColor}66`, `${accentColor}88`, `${accentColor}99`, `${accentColor}aa`, `${accentColor}bb`, accentColor]}/>
+        </div>
+        {/* Project status */}
+        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 12, padding: '20px 22px' }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'DM Sans', marginBottom: 16 }}>Projets récents</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            {recentProjects.map((p, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 5 }}>
+                    <span style={{ fontSize: 12, color: 'var(--text-primary)', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 180 }}>{p.name}</span>
+                    <span style={{ fontSize: 11, color: projStatusColors[p.status] || '#888', flexShrink: 0 }}>{p.status}</span>
+                  </div>
+                  <div style={{ height: 5, background: 'rgba(255,255,255,0.07)', borderRadius: 3, overflow: 'hidden' }}>
+                    <div style={{ height: '100%', width: `${p.progress}%`, background: projStatusColors[p.status] || accentColor, borderRadius: 3, transition: 'width 0.8s ease' }}></div>
+                  </div>
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--text-muted)', flexShrink: 0, width: 50, textAlign: 'right' }}>{p.progress}%</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+      {/* Row 3: Invoices + KPIs */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 16 }}>
+        {/* Invoices */}
+        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 12, padding: '20px 22px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'DM Sans' }}>Dernières factures</div>
+            <button style={{ fontSize: 12, color: accentColor, background: 'none', border: 'none', cursor: 'pointer', fontWeight: 500 }}>Voir tout →</button>
+          </div>
+          <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <thead>
+              <tr>
+                {['Référence','Client','Montant','Statut'].map(h => (
+                  <th key={h} style={{ textAlign: 'left', fontSize: 10, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.8px', paddingBottom: 10, borderBottom: '1px solid var(--card-border)' }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {recentInvoices.map((inv, i) => (
+                <tr key={i}>
+                  <td style={{ padding: '10px 0', fontSize: 12, color: 'var(--text-primary)', fontWeight: 500 }}>{inv.ref}</td>
+                  <td style={{ padding: '10px 0', fontSize: 12, color: 'var(--text-secondary)' }}>{inv.client}</td>
+                  <td style={{ padding: '10px 0', fontSize: 12, color: 'var(--text-primary)', fontWeight: 600 }}>{inv.amount}</td>
+                  <td style={{ padding: '10px 0' }}>
+                    <span style={{ fontSize: 10, fontWeight: 600, color: statusColors[inv.status], background: `${statusColors[inv.status]}18`, borderRadius: 6, padding: '3px 8px' }}>{inv.status}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {/* KPIs donuts */}
+        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 12, padding: '20px 22px' }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'DM Sans', marginBottom: 16 }}>KPIs clés</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {[
+              { label: 'Taux livraison projets', value: 87, color: accentColor },
+              { label: 'Satisfaction clients', value: 94, color: '#22c55e' },
+              { label: 'Taux recouvrement', value: 72, color: '#3b82f6' },
+            ].map((kpi, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                <DonutChart value={kpi.value} size={64} color={kpi.color}/>
+                <div>
+                  <div style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-primary)' }}>{kpi.label}</div>
+                  <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 2 }}>Objectif 100%</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── PROJECTS MODULE ──────────────────────────────────────────────────────
+const ProjectsModule = ({ accentColor }) => {
+  const projects = [
+    { name: 'Refonte Site Web Client A', team: ['M','S','K'], progress: 78, status: 'En cours', due: '15 Mai 2026', budget: '350 000 DZD', client: 'TechCorp SARL' },
+    { name: 'Déploiement Infrastructure Cloud', team: ['A','R'], progress: 45, status: 'En cours', due: '30 Mai 2026', budget: '820 000 DZD', client: 'SONATRACH' },
+    { name: 'Application Mobile B2B', team: ['L','M','T','Z'], progress: 92, status: 'Finalisation', due: '08 Mai 2026', budget: '480 000 DZD', client: 'StartupXYZ' },
+    { name: 'Migration ERP Partenaire', team: ['A'], progress: 20, status: 'Démarrage', due: '01 Juin 2026', budget: '1 200 000 DZD', client: 'Media Group' },
+    { name: 'Audit Sécurité SI', team: ['K','S'], progress: 60, status: 'En cours', due: '20 Mai 2026', budget: '220 000 DZD', client: 'BankAlgérie' },
+  ];
+  const colors = {'En cours':'#3b82f6','Finalisation':'#22c55e','Démarrage':accentColor,'Terminé':'#888'};
+  return (
+    <div style={{ padding: '24px', overflowY: 'auto', flex: 1 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
+        <div style={{ display: 'flex', gap: 8 }}>
+          {['Tous','En cours','Finalisation','Démarrage'].map(f => (
+            <button key={f} style={{ fontSize: 12, fontWeight: 500, padding: '6px 14px', borderRadius: 6, border: f === 'Tous' ? `1px solid ${accentColor}` : '1px solid var(--card-border)', background: f === 'Tous' ? `${accentColor}18` : 'transparent', color: f === 'Tous' ? accentColor : 'var(--text-secondary)', cursor: 'pointer' }}>{f}</button>
+          ))}
+        </div>
+        <button style={{ display: 'flex', alignItems: 'center', gap: 8, background: accentColor, color: '#fff', border: 'none', borderRadius: 8, padding: '9px 18px', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: 'DM Sans' }}>
+          <Icon name="plus" size={15} color="#fff"/>Nouveau projet
+        </button>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: 16 }}>
+        {projects.map((p, i) => (
+          <div key={i} style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 12, padding: '20px 22px', display: 'flex', flexDirection: 'column', gap: 14, cursor: 'pointer', transition: 'border-color 0.15s' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+              <div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4, lineHeight: 1.4 }}>{p.name}</div>
+                <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{p.client}</div>
+              </div>
+              <span style={{ fontSize: 10, fontWeight: 600, color: colors[p.status], background: `${colors[p.status]}18`, borderRadius: 6, padding: '3px 8px', flexShrink: 0 }}>{p.status}</span>
+            </div>
+            <div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>Progression</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: colors[p.status] }}>{p.progress}%</span>
+              </div>
+              <div style={{ height: 6, background: 'rgba(255,255,255,0.07)', borderRadius: 3, overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${p.progress}%`, background: colors[p.status], borderRadius: 3 }}></div>
+              </div>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: -6 }}>
+                {p.team.map((m, j) => (
+                  <div key={j} style={{ width: 26, height: 26, borderRadius: '50%', background: `hsl(${j * 60 + 200}, 60%, 50%)`, border: '2px solid var(--card-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 700, color: '#fff', marginLeft: j > 0 ? -8 : 0 }}>{m}</div>
+                ))}
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>Échéance</div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-primary)' }}>{p.due}</div>
+              </div>
+              <div style={{ textAlign: 'right' }}>
+                <div style={{ fontSize: 10, color: 'var(--text-muted)' }}>Budget</div>
+                <div style={{ fontSize: 11, fontWeight: 600, color: accentColor }}>{p.budget}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ─── INVOICE MODULE ───────────────────────────────────────────────────────
+const InvoiceModule = ({ accentColor }) => {
+  const invoices = [
+    { ref: 'FAC-2026-0312', client: 'TechCorp SARL', date: '01/05/2026', due: '31/05/2026', amount: '120 000', status: 'Payée' },
+    { ref: 'FAC-2026-0311', client: 'Media Group', date: '28/04/2026', due: '28/05/2026', amount: '85 500', status: 'En attente' },
+    { ref: 'FAC-2026-0310', client: 'StartupXYZ', date: '15/04/2026', due: '15/05/2026', amount: '42 000', status: 'En retard' },
+    { ref: 'FAC-2026-0309', client: 'SONATRACH', date: '10/04/2026', due: '10/05/2026', amount: '310 000', status: 'Payée' },
+    { ref: 'FAC-2026-0308', client: 'BankAlgérie', date: '05/04/2026', due: '05/05/2026', amount: '65 200', status: 'En attente' },
+    { ref: 'FAC-2026-0307', client: 'NEXUS Dev', date: '01/04/2026', due: '01/05/2026', amount: '95 000', status: 'Payée' },
+  ];
+  const statusColors = { 'Payée': '#22c55e', 'En attente': '#f59e0b', 'En retard': '#ef4444' };
+  return (
+    <div style={{ padding: '24px', overflowY: 'auto', flex: 1 }}>
+      {/* Summary cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16, marginBottom: 24 }}>
+        {[
+          { label: 'Total facturé', value: '717 700 DZD', sub: '6 factures', color: accentColor },
+          { label: 'Payé', value: '525 000 DZD', sub: '3 factures', color: '#22c55e' },
+          { label: 'En attente', value: '192 700 DZD', sub: '3 factures', color: '#f59e0b' },
+        ].map((s, i) => (
+          <div key={i} style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 12, padding: '18px 22px' }}>
+            <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: 6 }}>{s.label}</div>
+            <div style={{ fontSize: 24, fontWeight: 700, fontFamily: 'DM Sans', color: s.color }}>{s.value}</div>
+            <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>{s.sub}</div>
+          </div>
+        ))}
+      </div>
+      {/* Table */}
+      <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 12, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 22px', borderBottom: '1px solid var(--card-border)' }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'DM Sans' }}>Liste des factures</div>
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: 'var(--text-secondary)', background: 'var(--content-bg)', border: '1px solid var(--card-border)', borderRadius: 7, padding: '6px 12px', cursor: 'pointer' }}><Icon name="filter" size={13}/>Filtrer</button>
+            <button style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, color: '#fff', background: accentColor, border: 'none', borderRadius: 7, padding: '6px 14px', cursor: 'pointer', fontWeight: 600 }}><Icon name="plus" size={13} color="#fff"/>Nouvelle facture</button>
+          </div>
+        </div>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
+              {['Référence','Client','Date émission','Échéance','Montant (DZD)','Statut','Actions'].map(h => (
+                <th key={h} style={{ textAlign: 'left', fontSize: 10, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.8px', padding: '10px 22px', borderBottom: '1px solid var(--card-border)' }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {invoices.map((inv, i) => (
+              <tr key={i} style={{ borderBottom: '1px solid var(--card-border)', cursor: 'pointer' }}>
+                <td style={{ padding: '13px 22px', fontSize: 12, color: accentColor, fontWeight: 600 }}>{inv.ref}</td>
+                <td style={{ padding: '13px 22px', fontSize: 12, color: 'var(--text-primary)', fontWeight: 500 }}>{inv.client}</td>
+                <td style={{ padding: '13px 22px', fontSize: 12, color: 'var(--text-secondary)' }}>{inv.date}</td>
+                <td style={{ padding: '13px 22px', fontSize: 12, color: 'var(--text-secondary)' }}>{inv.due}</td>
+                <td style={{ padding: '13px 22px', fontSize: 12, color: 'var(--text-primary)', fontWeight: 700 }}>{inv.amount}</td>
+                <td style={{ padding: '13px 22px' }}>
+                  <span style={{ fontSize: 10, fontWeight: 600, color: statusColors[inv.status], background: `${statusColors[inv.status]}18`, borderRadius: 6, padding: '3px 8px' }}>{inv.status}</span>
+                </td>
+                <td style={{ padding: '13px 22px' }}>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: 4, borderRadius: 5 }}><Icon name="eye" size={14}/></button>
+                    <button style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: 4, borderRadius: 5 }}><Icon name="edit" size={14}/></button>
+                    <button style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: 4, borderRadius: 5 }}><Icon name="download" size={14}/></button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+// ─── CRM MODULE ───────────────────────────────────────────────────────────
+const CRMModule = ({ accentColor }) => {
+  const pipeline = [
+    { stage: 'Prospects', color: '#6b7280', deals: [
+      { name: 'NEXUS Dev - Infra Cloud', value: '450 000 DZD', contact: 'Ali B.' },
+      { name: 'StudioX - App Web', value: '180 000 DZD', contact: 'Sara K.' },
+    ]},
+    { stage: 'Qualification', color: '#3b82f6', deals: [
+      { name: 'BankPlus - SI Bancaire', value: '2 100 000 DZD', contact: 'Karim M.' },
+    ]},
+    { stage: 'Proposition', color: accentColor, deals: [
+      { name: 'ENIE - ERP', value: '980 000 DZD', contact: 'Leila H.' },
+      { name: 'AirAlgérie - Portail', value: '620 000 DZD', contact: 'Amine R.' },
+    ]},
+    { stage: 'Négociation', color: '#f59e0b', deals: [
+      { name: 'SONATRACH - Dashboard BI', value: '1 400 000 DZD', contact: 'Nadia Z.' },
+    ]},
+    { stage: 'Conclu', color: '#22c55e', deals: [
+      { name: 'TechCorp - Refonte Site', value: '350 000 DZD', contact: 'Omar S.' },
+    ]},
+  ];
+  return (
+    <div style={{ padding: '24px', overflowY: 'auto', flex: 1 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 24 }}>
+        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'DM Sans' }}>Pipeline Commercial</div>
+        <button style={{ display: 'flex', alignItems: 'center', gap: 6, background: accentColor, color: '#fff', border: 'none', borderRadius: 8, padding: '9px 16px', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>
+          <Icon name="plus" size={14} color="#fff"/>Nouveau lead
+        </button>
+      </div>
+      <div style={{ display: 'flex', gap: 14, overflowX: 'auto', paddingBottom: 12 }}>
+        {pipeline.map((col, ci) => (
+          <div key={ci} style={{ minWidth: 220, flex: 1 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div style={{ width: 8, height: 8, borderRadius: '50%', background: col.color }}></div>
+                <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)' }}>{col.stage}</span>
+              </div>
+              <span style={{ fontSize: 11, color: 'var(--text-muted)', background: 'var(--card-bg)', borderRadius: 10, padding: '2px 8px', border: '1px solid var(--card-border)' }}>{col.deals.length}</span>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              {col.deals.map((deal, di) => (
+                <div key={di} style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 10, padding: '14px 16px', cursor: 'pointer', borderLeft: `3px solid ${col.color}` }}>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 6, lineHeight: 1.4 }}>{deal.name}</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: col.color, marginBottom: 6 }}>{deal.value}</div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <div style={{ width: 20, height: 20, borderRadius: '50%', background: `${col.color}30`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, fontWeight: 700, color: col.color }}>{deal.contact[0]}</div>
+                    <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>{deal.contact}</span>
+                  </div>
+                </div>
+              ))}
+              <button style={{ border: `1px dashed var(--card-border)`, background: 'transparent', borderRadius: 10, padding: '10px', fontSize: 12, color: 'var(--text-muted)', cursor: 'pointer', width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                <Icon name="plus" size={13} color="var(--text-muted)"/>Ajouter
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+// ─── HR MODULE ────────────────────────────────────────────────────────────
+const HRModule = ({ accentColor }) => {
+  const employees = [
+    { name: 'Amina Boudiaf', role: 'Directrice Technique', dept: 'Technique', status: 'Présent', salary: '185 000 DZD', joined: 'Jan 2022' },
+    { name: 'Karim Messaoudi', role: 'Développeur Senior', dept: 'Dev', status: 'Présent', salary: '145 000 DZD', joined: 'Mar 2022' },
+    { name: 'Sara Khelifi', role: 'Designer UI/UX', dept: 'Design', status: 'Congé', salary: '120 000 DZD', joined: 'Juil 2023' },
+    { name: 'Amine Rahmani', role: 'Chef de projet', dept: 'PM', status: 'Présent', salary: '160 000 DZD', joined: 'Oct 2021' },
+    { name: 'Leila Hadj', role: 'Commerciale', dept: 'Ventes', status: 'Mission', salary: '95 000 DZD', joined: 'Feb 2024' },
+    { name: 'Omar Sellami', role: 'Admin Système', dept: 'IT', status: 'Présent', salary: '130 000 DZD', joined: 'May 2022' },
+  ];
+  const statusColors = { 'Présent': '#22c55e', 'Congé': '#f59e0b', 'Mission': '#3b82f6' };
+  const deptColors = { 'Technique': '#8b5cf6', 'Dev': '#3b82f6', 'Design': '#ec4899', 'PM': accentColor, 'Ventes': '#22c55e', 'IT': '#14b8a6' };
+  return (
+    <div style={{ padding: '24px', overflowY: 'auto', flex: 1 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, marginBottom: 24 }}>
+        {[
+          { label: 'Total employés', value: '63', icon: 'hr', color: accentColor },
+          { label: 'Présents aujourd\'hui', value: '58', icon: 'check', color: '#22c55e' },
+          { label: 'En congé', value: '4', icon: 'calendar', color: '#f59e0b' },
+          { label: 'Recrutements ouverts', value: '3', icon: 'plus', color: '#3b82f6' },
+        ].map((s, i) => (
+          <div key={i} style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 12, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 10, background: `${s.color}18`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Icon name={s.icon} size={18} color={s.color}/>
+            </div>
+            <div>
+              <div style={{ fontSize: 22, fontWeight: 700, fontFamily: 'DM Sans', color: 'var(--text-primary)' }}>{s.value}</div>
+              <div style={{ fontSize: 11, color: 'var(--text-muted)' }}>{s.label}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 12, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', padding: '16px 22px', borderBottom: '1px solid var(--card-border)' }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'DM Sans' }}>Annuaire employés</div>
+          <button style={{ display: 'flex', alignItems: 'center', gap: 6, background: accentColor, color: '#fff', border: 'none', borderRadius: 7, padding: '7px 14px', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+            <Icon name="plus" size={13} color="#fff"/>Nouvel employé
+          </button>
+        </div>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
+              {['Employé','Poste','Département','Statut','Salaire','Depuis','Actions'].map(h => (
+                <th key={h} style={{ textAlign: 'left', fontSize: 10, color: 'var(--text-muted)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.8px', padding: '10px 22px', borderBottom: '1px solid var(--card-border)' }}>{h}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {employees.map((emp, i) => (
+              <tr key={i} style={{ borderBottom: '1px solid var(--card-border)' }}>
+                <td style={{ padding: '13px 22px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                    <div style={{ width: 32, height: 32, borderRadius: '50%', background: `hsl(${i * 50 + 30}, 60%, 50%)`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: '#fff' }}>{emp.name[0]}</div>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{emp.name}</span>
+                  </div>
+                </td>
+                <td style={{ padding: '13px 22px', fontSize: 12, color: 'var(--text-secondary)' }}>{emp.role}</td>
+                <td style={{ padding: '13px 22px' }}>
+                  <span style={{ fontSize: 10, fontWeight: 600, color: deptColors[emp.dept] || '#888', background: `${deptColors[emp.dept] || '#888'}18`, borderRadius: 6, padding: '3px 8px' }}>{emp.dept}</span>
+                </td>
+                <td style={{ padding: '13px 22px' }}>
+                  <span style={{ fontSize: 10, fontWeight: 600, color: statusColors[emp.status], background: `${statusColors[emp.status]}18`, borderRadius: 6, padding: '3px 8px' }}>{emp.status}</span>
+                </td>
+                <td style={{ padding: '13px 22px', fontSize: 12, fontWeight: 600, color: 'var(--text-primary)' }}>{emp.salary}</td>
+                <td style={{ padding: '13px 22px', fontSize: 12, color: 'var(--text-muted)' }}>{emp.joined}</td>
+                <td style={{ padding: '13px 22px' }}>
+                  <div style={{ display: 'flex', gap: 6 }}>
+                    <button style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: 4, borderRadius: 5 }}><Icon name="eye" size={14}/></button>
+                    <button style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: 4, borderRadius: 5 }}><Icon name="edit" size={14}/></button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+// ─── MESSAGES MODULE ──────────────────────────────────────────────────────
+const MessagesModule = ({ accentColor }) => {
+  const [active, setActive] = useState(0);
+  const [msg, setMsg] = useState('');
+  const conversations = [
+    { name: 'Équipe Dev', last: 'Le build est passé ✓', time: '10:32', unread: 3, color: '#3b82f6' },
+    { name: 'Karim M.', last: 'Ok, je regarde ça ce soir', time: '09:15', unread: 0, color: '#8b5cf6' },
+    { name: 'Management', last: 'Réunion reportée à 15h', time: 'Hier', unread: 1, color: accentColor },
+    { name: 'Sara K.', last: 'Les maquettes sont prêtes !', time: 'Hier', unread: 0, color: '#ec4899' },
+    { name: 'Support Client', last: 'Ticket #4521 résolu', time: 'Lun', unread: 0, color: '#22c55e' },
+  ];
+  const messages = [
+    { from: 'Karim M.', text: 'Salut, le déploiement de ce matin a bien marché ?', time: '09:10', mine: false },
+    { from: 'Moi', text: 'Oui, tout s\'est bien passé. Les tests passent.', time: '09:12', mine: true },
+    { from: 'Karim M.', text: 'Ok, je regarde ça ce soir', time: '09:15', mine: false },
+  ];
+  return (
+    <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+      {/* Conversations list */}
+      <div style={{ width: 280, borderRight: '1px solid var(--card-border)', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ padding: '16px', borderBottom: '1px solid var(--card-border)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 8, padding: '8px 12px' }}>
+            <Icon name="search" size={13} color="var(--text-muted)"/>
+            <input placeholder="Rechercher..." style={{ background: 'none', border: 'none', outline: 'none', fontSize: 12, color: 'var(--text-secondary)', fontFamily: 'Inter', flex: 1 }}/>
+          </div>
+        </div>
+        <div style={{ flex: 1, overflowY: 'auto' }}>
+          {conversations.map((c, i) => (
+            <div key={i} onClick={() => setActive(i)} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '12px 16px', cursor: 'pointer', background: active === i ? `${accentColor}10` : 'transparent', borderBottom: '1px solid var(--card-border)' }}>
+              <div style={{ width: 38, height: 38, borderRadius: '50%', background: `${c.color}25`, border: `2px solid ${c.color}50`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, color: c.color, flexShrink: 0 }}>{c.name[0]}</div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{c.name}</span>
+                  <span style={{ fontSize: 10, color: 'var(--text-muted)' }}>{c.time}</span>
+                </div>
+                <div style={{ fontSize: 11, color: 'var(--text-muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', marginTop: 2 }}>{c.last}</div>
+              </div>
+              {c.unread > 0 && <div style={{ width: 18, height: 18, borderRadius: '50%', background: accentColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, fontWeight: 700, color: '#fff', flexShrink: 0 }}>{c.unread}</div>}
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Chat area */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ padding: '14px 20px', borderBottom: '1px solid var(--card-border)', display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{ width: 34, height: 34, borderRadius: '50%', background: `${conversations[active].color}25`, border: `2px solid ${conversations[active].color}50`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, color: conversations[active].color }}>{conversations[active].name[0]}</div>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{conversations[active].name}</div>
+            <div style={{ fontSize: 10, color: '#22c55e' }}>● En ligne</div>
+          </div>
+        </div>
+        <div style={{ flex: 1, padding: '20px', display: 'flex', flexDirection: 'column', gap: 12, overflowY: 'auto' }}>
+          {messages.map((m, i) => (
+            <div key={i} style={{ display: 'flex', justifyContent: m.mine ? 'flex-end' : 'flex-start' }}>
+              <div style={{ maxWidth: '60%', background: m.mine ? accentColor : 'var(--card-bg)', borderRadius: m.mine ? '12px 12px 2px 12px' : '12px 12px 12px 2px', padding: '10px 14px', border: m.mine ? 'none' : '1px solid var(--card-border)' }}>
+                {!m.mine && <div style={{ fontSize: 10, fontWeight: 600, color: accentColor, marginBottom: 4 }}>{m.from}</div>}
+                <div style={{ fontSize: 13, color: m.mine ? '#fff' : 'var(--text-primary)', lineHeight: 1.5 }}>{m.text}</div>
+                <div style={{ fontSize: 10, color: m.mine ? 'rgba(255,255,255,0.6)' : 'var(--text-muted)', marginTop: 4, textAlign: 'right' }}>{m.time}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ padding: '14px 20px', borderTop: '1px solid var(--card-border)', display: 'flex', gap: 10 }}>
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8, background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 10, padding: '10px 14px' }}>
+            <button style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}><Icon name="attach" size={16}/></button>
+            <input value={msg} onChange={e => setMsg(e.target.value)} placeholder="Écrire un message..." style={{ flex: 1, background: 'none', border: 'none', outline: 'none', fontSize: 13, color: 'var(--text-primary)', fontFamily: 'Inter' }}/>
+          </div>
+          <button onClick={() => setMsg('')} style={{ background: accentColor, border: 'none', borderRadius: 10, padding: '10px 18px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Icon name="send" size={16} color="#fff"/>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── ANALYTICS MODULE ─────────────────────────────────────────────────────
+const AnalyticsModule = ({ accentColor }) => {
+  const monthlyData = [
+    { label: 'Jan', value: 420 }, { label: 'Fév', value: 580 }, { label: 'Mar', value: 510 },
+    { label: 'Avr', value: 670 }, { label: 'Mai', value: 720 }, { label: 'Juin', value: 847 },
+    { label: 'Juil', value: 790 }, { label: 'Août', value: 860 }, { label: 'Sep', value: 920 },
+  ];
+  return (
+    <div style={{ padding: '24px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+        {[
+          { label: 'CA annuel', value: '6 314 000 DZD', change: '+23.1%', color: accentColor },
+          { label: 'Projets livrés', value: '47', change: '+8 YoY', color: '#22c55e' },
+          { label: 'Nouveaux clients', value: '18', change: '+6 YoY', color: '#3b82f6' },
+        ].map((s, i) => (
+          <div key={i} style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 12, padding: '20px' }}>
+            <div style={{ fontSize: 11, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.8px', marginBottom: 8 }}>{s.label}</div>
+            <div style={{ fontSize: 26, fontWeight: 700, fontFamily: 'DM Sans', color: s.color, letterSpacing: '-0.5px' }}>{s.value}</div>
+            <div style={{ fontSize: 12, color: '#22c55e', fontWeight: 600, marginTop: 6 }}>{s.change}</div>
+          </div>
+        ))}
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 16 }}>
+        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 12, padding: '20px 22px' }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'DM Sans', marginBottom: 4 }}>Évolution du chiffre d'affaires</div>
+          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginBottom: 16 }}>Jan — Sep 2026 • en milliers DZD</div>
+          <BarChart data={monthlyData} colors={monthlyData.map((_, i) => i === 8 ? accentColor : `${accentColor}55`)}/>
+        </div>
+        <div style={{ background: 'var(--card-bg)', border: '1px solid var(--card-border)', borderRadius: 12, padding: '20px 22px' }}>
+          <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)', fontFamily: 'DM Sans', marginBottom: 16 }}>Répartition par département</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+            {[
+              { name: 'Développement', pct: 42, color: '#3b82f6' },
+              { name: 'Infrastructure', pct: 28, color: accentColor },
+              { name: 'Design', pct: 18, color: '#ec4899' },
+              { name: 'Conseil', pct: 12, color: '#22c55e' },
+            ].map((d, i) => (
+              <div key={i}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                  <span style={{ fontSize: 12, color: 'var(--text-secondary)' }}>{d.name}</span>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: d.color }}>{d.pct}%</span>
+                </div>
+                <div style={{ height: 6, background: 'rgba(255,255,255,0.07)', borderRadius: 3 }}>
+                  <div style={{ height: '100%', width: `${d.pct}%`, background: d.color, borderRadius: 3 }}></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ─── GENERIC PLACEHOLDER ──────────────────────────────────────────────────
+const PlaceholderModule = ({ title, accentColor }) => (
+  <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
+    <div style={{ width: 64, height: 64, borderRadius: 16, background: `${accentColor}18`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Icon name="chart" size={28} color={accentColor}/>
+    </div>
+    <div style={{ fontSize: 18, fontWeight: 700, fontFamily: 'DM Sans', color: 'var(--text-primary)' }}>{title}</div>
+    <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>Module en cours de développement</div>
+  </div>
+);
+
+// ─── MODULE TITLES ────────────────────────────────────────────────────────
+const moduleTitles = {
+  dashboard: 'Dashboard',
+  projects: 'Gestion de projets',
+  invoice: 'Facturation & Devis',
+  crm: 'CRM & Ventes',
+  hr: 'Ressources Humaines',
+  accounting: 'Comptabilité & Finance',
+  inventory: 'Inventaire & Stock',
+  analytics: 'Analytics & Rapports',
+  messages: 'Messagerie interne',
+};
+
+// ─── MAIN APP ─────────────────────────────────────────────────────────────
+const App = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [activeModule, setActiveModule] = useState('dashboard');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const accent = tweaks.accentColor;
+  const isLight = tweaks.theme === 'light';
+
+  useEffect(() => {
+    document.documentElement.className = isLight ? 'light-theme' : '';
+    document.documentElement.style.setProperty('--accent', accent);
+    document.documentElement.style.setProperty('--accent-light', accent + 'cc');
+    document.documentElement.style.setProperty('--accent-dim', accent + '22');
+  }, [accent, isLight]);
+
+  const renderModule = () => {
+    switch(activeModule) {
+      case 'dashboard': return <DashboardModule accentColor={accent}/>;
+      case 'projects': return <ProjectsModule accentColor={accent}/>;
+      case 'invoice': return <InvoiceModule accentColor={accent}/>;
+      case 'crm': return <CRMModule accentColor={accent}/>;
+      case 'hr': return <HRModule accentColor={accent}/>;
+      case 'messages': return <MessagesModule accentColor={accent}/>;
+      case 'analytics': return <AnalyticsModule accentColor={accent}/>;
+      default: return <PlaceholderModule title={moduleTitles[activeModule]} accentColor={accent}/>;
+    }
+  };
+
+  if (!loggedIn) return <LoginPage onLogin={() => setLoggedIn(true)}/>;
+
+  return (
+    <>
+      <div style={{ width: '100vw', height: '100vh', display: 'flex', overflow: 'hidden' }}>
+        <Sidebar active={activeModule} onNavigate={setActiveModule} collapsed={sidebarCollapsed} accentColor={accent}/>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+          <Topbar title={moduleTitles[activeModule]} onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} accentColor={accent} onLogout={() => setLoggedIn(false)}/>
+          <div style={{ flex: 1, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            {renderModule()}
+          </div>
+        </div>
+      </div>
+      <TweaksPanel>
+        <TweakSection title="Apparence">
+          <TweakColor label="Couleur principale" value={accent} onChange={v => setTweak('accentColor', v)}/>
+          <TweakRadio label="Thème" value={tweaks.theme} options={[{label:'Sombre',value:'dark'},{label:'Clair',value:'light'}]} onChange={v => setTweak('theme', v)}/>
+        </TweakSection>
+        <TweakSection title="Navigation">
+          <TweakRadio label="Sidebar" value={sidebarCollapsed ? 'collapsed' : 'expanded'} options={[{label:'Étendue',value:'expanded'},{label:'Icônes',value:'collapsed'}]} onChange={v => setSidebarCollapsed(v === 'collapsed')}/>
+          <TweakRadio label="Module actif" value={activeModule} options={navItems.slice(0,4).map(n => ({label:n.label.split(' ')[0], value: n.id}))} onChange={v => setActiveModule(v)}/>
+        </TweakSection>
+      </TweaksPanel>
+    </>
+  );
+};
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
